@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<template
+    format="5"
+    revision="3"
+    name="Fragment (BaseDialog)"
+    description="Creates a base fragment that is compatible back to API level 4."
+    minApi="7"
+    minBuildApi="8">
+
+    <category value="Fragment" />
+
+    <dependency name="android-support-v4" revision="8" />
+
+	 <parameter
+        id="isFirstDialogFragment"
+        name="Create Base BaseDialogFragment?"
+        type="boolean"
+        default="false"
+        help="Create a base class to BaseDialogFragment" />
+		
+    <parameter
+        id="className"
+        name="Fragment Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseDialogFragment"
+        help="The name of the fragment class to create" />
+
+    <thumbs>
+        <thumb>template_base_fragment.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
