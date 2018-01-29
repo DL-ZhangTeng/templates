@@ -2,8 +2,8 @@
 <template
         format="5"
         revision="5"
-        name="Activity 启动页"
-        description="Creates a new application settings activity that presents alternative layouts on handset and tablet-size screens."
+        name="Activity SplashActivity"
+        description="Creates a new SplashActivity."
         minApi="11"
         minBuildApi="11"
         requireAppTheme="true"
@@ -16,7 +16,7 @@
 
     <parameter
             id="activityClass"
-            name="Activity 名称"
+            name="Activity Name"
             type="string"
             constraints="class|unique|nonempty"
             default="SplashActivity"
@@ -24,27 +24,18 @@
 			help="The name of the activity class to create"/>
 	<parameter
 		id="layoutName"
-		name="布局名称(layout):"
+		name="name(layout):"
 		type="string"
 		constraints="layout|unique|nonempty"
 		suggest="${activityToLayout(activityClass)}"
 		default="activity_splash"
 		help="The name of the layout to create for the activity" />	
 	
-	
 	<parameter
-        id="isLauncher"
-        name="是否为启动activity?"
-        type="boolean"
-        default="true"
-        help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher" />
-
-<parameter
             id="packageName"
-            name="包名"
+            name="packageName"
             type="string"
-            constraints="package"
-            default="com.mycompany.myapp"/>
+            constraints="package"/>
 
     <!-- 128x128 thumbnails relative to template.xml -->
     <thumbs>

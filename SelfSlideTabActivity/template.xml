@@ -2,7 +2,7 @@
 <template
     format="5"
     revision="7"
-    name="Activity 滑动tab+ViewPager "
+    name="Activity tab+ViewPager "
     minApi="7"
     minBuildApi="14"
     description="Creates a new activity with viewpager and tabs">
@@ -64,8 +64,7 @@
         id="packageName"
         name="Package name"
         type="string"
-        constraints="package"
-        default="com.mycompany.myapp" />
+        constraints="package"/>
 
     <!-- 128x128 thumbnails relative to template.xml -->
     <thumbs>

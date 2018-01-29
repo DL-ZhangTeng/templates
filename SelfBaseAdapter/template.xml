@@ -2,10 +2,8 @@
 <template
         format="5"
         revision="5"
-        name="RecyclerAdapter(继承自张鸿洋的ViewHolder)"
-        description="创建一个基于张鸿洋的 ViewHolder的原生RecyclerAdapter">
-
-
+        name="BaseAdapter(BaseAdapter.ViewHolder)"
+        description="BaseAdapter">
 
     <category value="Adapter"/>
     <formfactor value="Mobile"/>
@@ -17,23 +15,13 @@
             constraints="class|unique|nonempty"
             default="Adapter"
             help="The name of the Adapter class to create"/>
-<!-- 
-    <parameter
-            id="activityTitle"
-            name="Title"
+
+	<parameter
+            id="layoutName"
+            name="Layout Name"
             type="string"
-            constraints="nonempty"
-            default="Settings"
-            help="The name of the activity."/>
-			
-    <parameter
-            id="parentActivityClass"
-            name="Hierarchical Parent"
-            type="string"
-            constraints="activity|exists|empty"
-            default=""
-            help="The hierarchical parent activity, used to provide a default implementation for the 'Up' button"/>
-			-->
+            constraints="class|unique|nonempty"
+            help="The name of the item layout to create"/>
     <parameter
             id="beanClass"
             name="Bean Class"
@@ -47,15 +35,13 @@
             name="ViewHolder Class Name"
             type="string"
             constraints="class"
-            default="ViewHolder"
-            help="自定义的 ViewHolder 的名字"/>
+            default="ViewHolder"/>
 
     <parameter
             id="packageName"
             name="Package name"
             type="string"
-            constraints="package"
-            default="com.mycompany.myapp"/>
+            constraints="package"/>
 
     <!-- 128x128 thumbnails relative to template.xml -->
     <thumbs>

@@ -12,8 +12,10 @@ import android.view.View;
 <#if isFirstFragment> 
 import android.view.ViewGroup;
 import android.widget.Toast;
+<#if applicationPackage??>
 import ${applicationPackage}.R;
 import ${applicationPackage}.base.BaseFragment;
+</#if>
 </#if>
 /**
  *

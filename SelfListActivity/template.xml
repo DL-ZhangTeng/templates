@@ -2,8 +2,8 @@
 <template
         format="5"
         revision="5"
-        name="Activity 快速列表"
-        description="Creates a new application settings activity that presents alternative layouts on handset and tablet-size screens."
+        name="Activity List"
+        description="Creates a new ListActivity."
         minApi="11"
         minBuildApi="11"
         requireAppTheme="true"
@@ -16,7 +16,7 @@
 
     <parameter
             id="activityClass"
-            name="Activity 名称"
+            name="Activity Name"
             type="string"
             constraints="class|unique|nonempty"
             default="ListActivity"
@@ -24,7 +24,7 @@
 			help="The name of the activity class to create"/>
 	<parameter
 		id="activityLayoutName"
-		name="布局名称(layout):"
+		name="name(layout)"
 		type="string"
 		constraints="layout|unique|nonempty"
 		suggest="${activityToLayout(activityClass)}"
@@ -33,7 +33,7 @@
 		
 	<parameter
 		id="beanName"
-		name="实体(Bean):"
+		name="Bean"
 		type="string"
 		constraints="class|nonempty"
 		suggest=""
@@ -42,17 +42,16 @@
 	
 	<parameter
         id="isLauncher"
-        name="是否为启动activity?"
+        name="isLauncherActivity?"
         type="boolean"
         default="false"
         help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher" />
 
-<parameter
+	<parameter
             id="packageName"
             name="Package name"
             type="string"
-            constraints="package"
-            default="com.mycompany.myapp"/>
+            constraints="package"/>
 
     <!-- 128x128 thumbnails relative to template.xml -->
     <thumbs>
