@@ -2,7 +2,7 @@
 <template
         format="5"
         revision="5"
-        name="Activity List(SwipeRefreshLayout)"
+        name="Activity List(SmartRefreshLayout)"
         description="Creates a new ListActivity."
         minApi="11"
         minBuildApi="11"
@@ -22,6 +22,7 @@
             default="ListActivity"
 			suggest="${layoutToActivity(activityLayoutName)}"
 			help="The name of the activity class to create"/>
+	
 	<parameter
 		id="activityLayoutName"
 		name="name(layout)"
@@ -32,21 +33,31 @@
 		help="The name of the layout to create for the activity" />
 		
 	<parameter
-		id="beanName"
-		name="Bean"
-		type="string"
-		constraints="class|nonempty"
-		suggest=""
-		default="Bean"
-		help="The name of the Bean to create for the Listactivity" />
-	
-	<parameter
         id="isLauncher"
         name="isLauncherActivity?"
         type="boolean"
         default="false"
         help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher" />
-
+	<parameter
+		id="entityName"
+		name="Entity"
+		type="string"
+		constraints="class|nonempty"
+		suggest=""
+		default="Entity"
+		help="The name of the Entity to create for the Listactivity" />
+	<parameter
+        id="isNoDataView"
+        name="isNoDataView?"
+        type="boolean"
+        default="false"
+        help="If true, this activity will have a NoDataView" />
+	<parameter
+        id="isTitleBar"
+        name="isTitleBar?"
+        type="boolean"
+        default="false"
+        help="If true, this activity will have a TitleBar" />
 	<parameter
             id="packageName"
             name="Package name"
