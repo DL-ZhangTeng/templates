@@ -13,7 +13,7 @@
 
 	 <parameter
         id="isFirstFragment"
-        name="Create Base BaseFragment?"
+        name="is First Fragment?"
         type="boolean"
         default="false"
         help="Create a base class to BaseFragment" />
@@ -30,7 +30,7 @@
         id="includeLayout"
         name="Create layout XML?"
         type="boolean"
-        default="false"
+        default="!isFirstFragment"
         help="Generate a layout XML for the fragment" />
 
     <parameter

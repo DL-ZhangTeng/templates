@@ -10,21 +10,21 @@
     <category value="Activity" />
     <formfactor value="Mobile" />
 
+	<parameter
+        id="isFirstActivity"
+        name="is FirstActivity File?"
+        type="boolean"
+        default="false"
+        help="If true, a BaseActivity file will be generated" />
+		
     <parameter
         id="activityClass"
         name="Activity name"
         type="string"
         constraints="class|unique|nonempty"
         suggest="${layoutToActivity(layoutName)}"
-        default="MainActivity"
+        default="BaseActivity"
         help="The name of the activity class to create" />
-
-    <parameter
-        id="generateLayout"
-        name="Generate Layout File"
-        type="boolean"
-        default="true"
-        help="If true, a layout file will be generated" />
 
     <parameter
         id="layoutName"
@@ -33,7 +33,7 @@
         constraints="layout|unique|nonempty"
         suggest="${activityToLayout(activityClass)}"
         default="activity_main"
-        visibility="generateLayout"
+        visibility="true"
         help="The name of the layout to create for the activity" />
 
     <parameter
@@ -46,8 +46,7 @@
         id="packageName"
         name="Package name"
         type="string"
-        constraints="package"
-        default="com.mycompany.myapp" />
+        constraints="package"/>
 
     <!-- 128x128 thumbnails relative to template.xml -->
     <thumbs>

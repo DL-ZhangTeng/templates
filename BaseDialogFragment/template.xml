@@ -13,7 +13,7 @@
 
 	 <parameter
         id="isFirstDialogFragment"
-        name="Create Base BaseDialogFragment?"
+        name="is First DialogFragment?"
         type="boolean"
         default="false"
         help="Create a base class to BaseDialogFragment" />
@@ -25,7 +25,21 @@
         constraints="class|nonempty|unique"
         default="BaseDialogFragment"
         help="The name of the fragment class to create" />
+	<parameter
+        id="includeLayout"
+        name="Create layout XML?"
+        type="boolean"
+        default="!isFirstDialogFragment"
+        help="Generate a layout XML for the fragment" />
 
+    <parameter
+        id="fragmentName"
+        name="Fragment Layout Name"
+        type="string"
+        constraints="layout|nonempty|unique"
+        visibility="includeLayout"
+        suggest="fragment_${classToResource(className)}"
+        help="The name of the layout to create" />
     <thumbs>
         <thumb>template_base_fragment.png</thumb>
     </thumbs>

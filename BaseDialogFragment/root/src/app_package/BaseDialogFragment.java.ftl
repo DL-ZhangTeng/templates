@@ -1,23 +1,26 @@
 package ${packageName}<#if isFirstDialogFragment>.base<#else>.fragment</#if>;
 
+import android.view.View;
+<#if isFirstDialogFragment>
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-
+<#else>
+import ${packageName}.base.BaseDialogFragment;
+</#if>
 import ${packageName}.R;
 
 /**
  * Created by swing on 2017/11/30.
  */
 
-public abstract class BaseDialogFragment extends DialogFragment {
-
+public abstract class ${className} extends <#if isFirstDialogFragment>DialogFragment<#else>BaseDialogFragment</#if> {
+	<#if isFirstDialogFragment>
     @Override
     public void onStart() {
         super.onStart();
@@ -57,4 +60,21 @@ public abstract class BaseDialogFragment extends DialogFragment {
     protected abstract int getResourceId();
 
     protected abstract void initView(View view);
+	<#else>
+	   @Override
+    protected int getResourceId() {
+        return R.layout.${fragmentName};
+    }
+
+    @Override
+    protected void initView(final View view) {
+        
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+       
+    }
+	</#if>
 }
