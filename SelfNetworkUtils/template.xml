@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<template
+    format="5"
+    revision="5"
+    name="NetworkUtils"
+    minApi="9"
+    minBuildApi="14"
+    description="Creates a new template for NetworkUtils">
+
+    <category value="Utils" />
+    <formfactor value="Mobile" />
+
+	<parameter
+            id="className"
+            name="NetworkUtils Name"
+            type="string"
+            constraints="class|unique|nonempty"
+            default="NetworkUtils"
+            help="The name of the NetworkUtils class to create"/>
+
+		
+    <!-- 128x128 thumbnails relative to template.xml -->
+    <thumbs>
+        <!-- default thumbnail is required -->
+        <thumb>template_blank_activity.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>

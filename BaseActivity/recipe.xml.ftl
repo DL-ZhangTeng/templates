@@ -16,5 +16,5 @@
     <instantiate from="root/src/app_package/BaseActivity.java.ftl"
                    to="${escapeXmlAttribute(srcOut)}/<#if isFirstActivity>base<#else>activity</#if>/${activityClass}.java" />
 
-    <open file="${escapeXmlAttribute(srcOut)}/activity/${activityClass}.java" />
+    <open file="${escapeXmlAttribute(srcOut)}/<#if isFirstActivity>base<#else>activity</#if>/${activityClass}.java" />
 </recipe>
