@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<template
+    format="5"
+    revision="5"
+    name="HttpUtils(OkHttp-Simple)"
+    minApi="9"
+    minBuildApi="14"
+    description="Creates a new template for HttpUtils">
+
+    <category value="Utils" />
+    <formfactor value="Mobile" />
+
+	<parameter
+            id="className"
+            name="HttpUtils Name"
+            type="string"
+            constraints="class|unique|nonempty"
+            default="HttpUtils"
+            help="The name of the HttpUtils class to create"/>
+
+		
+    <!-- 128x128 thumbnails relative to template.xml -->
+    <thumbs>
+        <!-- default thumbnail is required -->
+        <thumb>template_blank_activity.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
