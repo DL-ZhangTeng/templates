@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ${packageName}.MyApplication;
 import ${packageName}.R;
 import ${packageName}.common.config.NetConfig;
 import ${packageName}.common.tools.NetUtil;
