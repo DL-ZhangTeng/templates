@@ -25,43 +25,56 @@ public class ${className} extends PopupWindow {
     private View view;
     private WheelView year, month;
     private Button button;
-    private Integer selectedYear = Calendar.getInstance().get(Calendar.YEAR);
-    private Integer selectedMonth = Calendar.getInstance().get(Calendar.MONTH);
+    private Integer selectedYear;
+    private Integer selectedMonth;
+    private ArrayList<Integer> listYear;
+    private ArrayList<Integer> listMonth;
+    private int startYear;
 
     public ${className}(Context context) {
         super(context);
         this.context = context;
+        this.selectedYear = Calendar.getInstance().get(Calendar.YEAR);
+        this.selectedMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        initView();
+    }
+
+    public ${className}(Context context, Integer selectedYear, Integer selectedMonth) {
+        super(context);
+        this.context = context;
+        this.selectedYear = selectedYear;
+        this.selectedMonth = selectedMonth;
         initView();
     }
 
     private void initView() {
-        view = LayoutInflater.from(context).inflate(R.layout.timepicker, null);
+        view = LayoutInflater.from(context).inflate(R.layout.dialog_report_date_picker, null);
         year = (WheelView) view.findViewById(R.id.year);
         month = (WheelView) view.findViewById(R.id.month);
         button = (Button) view.findViewById(R.id.btn_ok);
         year.setCyclic(false);
         month.setCyclic(false);
-        year.setCurrentItem(selectedYear);
-        month.setCurrentItem(selectedMonth);
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
-        int startYear = 2000;
-        List listYear = new ArrayList<Integer>();
+        startYear = 2000;
+        listYear = new ArrayList<Integer>();
         for (int i = startYear; currentYear - i >= 0; i++) {
             listYear.add(i);
         }
-        List listMonth = new ArrayList<Integer>();
+        listMonth = new ArrayList<Integer>();
         for (int i = 0; i < 12; i++) {
             listMonth.add(i + 1);
         }
         year.setAdapter(new ArrayWheelAdapter<Integer>(listYear));
         month.setAdapter(new ArrayWheelAdapter<Integer>(listMonth));
+        year.setCurrentItem(selectedYear - startYear);
+        month.setCurrentItem(selectedMonth - 1);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TimePicker.this.dismiss();
                 if (onOkClickListener != null)
-                    onOkClickListener.onClick(v);
+                    onOkClickListener.onClick(listYear.get(year.getCurrentItem()) + "", listMonth.get(month.getCurrentItem()) + "");
             }
         });
         this.setContentView(view);
@@ -85,6 +98,11 @@ public class ${className} extends PopupWindow {
         this.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
+    public void setCurrentDate(Integer year, Integer month) {
+        this.year.setCurrentItem(year - startYear);
+        this.month.setCurrentItem(month - 1);
+    }
+
     public void showdialog(View view) {
         showAsDropDown(view, 0, 0);
     }
@@ -96,6 +114,6 @@ public class ${className} extends PopupWindow {
     private OnOkClickListener onOkClickListener;
 
     public interface OnOkClickListener {
-        void onClick(View view);
+        void onClick(String year, String month);
     }
 }
