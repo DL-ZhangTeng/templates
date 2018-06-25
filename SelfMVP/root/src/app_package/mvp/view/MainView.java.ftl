@@ -1,4 +1,4 @@
-package ${packageName}.view;
+package ${packageName}.mvp.view;
 
 import ${packageName}.mvp.base.BaseView;
 
