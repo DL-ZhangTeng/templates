@@ -5,7 +5,7 @@ import ${packageName}.mvp.view.${view};
 import ${packageName}.mvp.model.${model};
 
 
-public class ${presenter} extends BasePresenter implements ${view}{
+public class ${presenter} extends BasePresenter{
 	private ${view} view;
 	private ${model} model;
 
