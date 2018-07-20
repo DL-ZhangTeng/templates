@@ -46,7 +46,7 @@ public class ${adapterClass} extends RecyclerView.Adapter<${adapterClass}.${view
     public int getItemCount() {
         return mData == null&&mData.isEmpty()? 0 : mData.size();
     }
-
+	
     public class ${viewHolder} extends RecyclerView.ViewHolder {
 
         public ${viewHolder}(View itemView) {

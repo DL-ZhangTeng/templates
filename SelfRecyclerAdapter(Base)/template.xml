@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<template
+        format="5"
+        revision="5"
+        name="BaseAdapter(RecyclerAdapter.ViewHolder)"
+        description="BaseAdapter">
+
+    <category value="Adapter"/>
+    <formfactor value="Mobile"/>
+	
+	<parameter
+        id="isFirstAdapter"
+        name="is First Fragment?"
+        type="boolean"
+        default="false"
+        help="Create a base class to BaseAdapter" />
+		
+    <parameter
+            id="adapterClass"
+            name="Adapter Name"
+            type="string"
+            constraints="class|unique|nonempty"
+            default="BaseAdapter"
+			visibility="!isFirstAdapter"
+            help="The name of the Adapter class to create"/>
+
+	<parameter
+            id="layoutName"
+            name="Layout Name"
+            type="string"
+            constraints="class|unique|nonempty"
+			visibility="!isFirstAdapter"
+            help="The name of the item layout to create"/>
+    <parameter
+            id="beanClass"
+            name="Bean Class"
+            type="string"
+            constraints="class"
+            default="T"
+			visibility="!isFirstAdapter"
+            help="The Bean class"/>
+
+    <parameter
+            id="viewHolder"
+            name="ViewHolder Class Name"
+            type="string"
+            constraints="class"
+			visibility="!isFirstAdapter"
+            default="ViewHolder"/>
+
+    <parameter
+            id="packageName"
+            name="Package name"
+            type="string"
+            constraints="package"/>
+
+    <!-- 128x128 thumbnails relative to template.xml -->
+    <thumbs>
+        <!-- default thumbnail is required -->
+        <thumb>activity_fastlist.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl"/>
+    <execute file="recipe.xml.ftl"/>
+
+
+</template>

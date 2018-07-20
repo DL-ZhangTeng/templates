@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<template
+        format="5"
+        revision="5"
+        name="TreeRecyclerViewAdapter"
+        description="TreeRecyclerViewAdapter">
+
+    <category value="Adapter"/>
+    <formfactor value="Mobile"/>
+
+    <!-- 128x128 thumbnails relative to template.xml -->
+    <thumbs>
+        <!-- default thumbnail is required -->
+        <thumb>activity_fastlist.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl"/>
+    <execute file="recipe.xml.ftl"/>
+
+
+</template>
