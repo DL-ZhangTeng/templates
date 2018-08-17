@@ -3,6 +3,7 @@ package ${packageName}.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -44,6 +45,20 @@ public class ${className} {
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.heightPixels;
+    }
+
+    /**
+     * 获得屏幕大小
+     *
+     * @param context
+     * @return
+     */
+    public static Point getScreenSize(Context context) {
+        Point point = new Point();
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getSize(point);
+        return point;
     }
 
     /**
