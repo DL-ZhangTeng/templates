@@ -25,6 +25,13 @@ public class ${className} {
     private static long downTime;
     private static float scale = 0;
 
+    /**
+     * xy坐标分割标示
+     */
+    private final static String XYDECORATION = "#";
+    /**
+     * 动作格式 动作X#Y 如 DOWN100#100
+     */
     private final static String DOWN = "DOWN";
     private final static String MOVE = "MOVE";
     private final static String UP = "UP";
@@ -34,8 +41,6 @@ public class ${className} {
     private final static String BACK = "BACK";
 
     private final static String DEGREE = "DEGREE";
-
-    private final static String XYDECORATION = "#";
 
     static {
         try {
