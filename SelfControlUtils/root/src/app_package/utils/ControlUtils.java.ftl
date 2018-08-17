@@ -10,13 +10,25 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
- * 屏幕相关辅助类
+ * 屏幕控制类
  */
 public class ${className} {
 
@@ -25,6 +37,8 @@ public class ${className} {
     private static long downTime;
     private static float scale = 0;
 
+    private static ThreadPoolProxy mThreadPoolProxy = new ThreadPoolProxy(1, 1);
+    
     /**
      * xy坐标分割标示
      */
@@ -57,15 +71,20 @@ public class ${className} {
 
     }
 
+    /////////////////////////////////////////////////////////////
+    /////////////////////////受控端//////////////////////////////
+    /////////////////////////////////////////////////////////////
+
     /**
      * @param inputStream 数据流，根据流中的数据做出相应的操作
      */
     public static void read(final InputStream inputStream, final Point screenSize) {
-
-        new Thread() {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(1, 1);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
             @Override
             public void run() {
-                super.run();
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                     while (true) {
@@ -104,9 +123,8 @@ public class ${className} {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
-        }.start();
+        });
     }
 
     /**
@@ -253,6 +271,13 @@ public class ${className} {
     }
 
     /**
+     * 旋转
+     */
+    private static void degree() {
+
+    }
+
+    /**
      * 注入触摸事件
      */
     @SuppressLint("NewApi")
@@ -277,5 +302,311 @@ public class ${className} {
         int meta = shift ? 1 : 0;
         injectKeyEvent(im, injectInputEventMethod, new KeyEvent(now, now, 0, keyCode, 0, meta, -1, 0, 0, inputSource));
         injectKeyEvent(im, injectInputEventMethod, new KeyEvent(now, now, 1, keyCode, 0, meta, -1, 0, 0, inputSource));
+    }
+
+    /////////////////////////////////////////////////////////////
+    /////////////////////////控制端//////////////////////////////
+    /////////////////////////////////////////////////////////////
+
+    /**
+     * 写入抬起动作命令
+     */
+    public static void writeControlUp(final OutputStream outputStream, final Point screenSize, final Point point) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlUp(writer, screenSize, point.x, point.y);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    /**
+     * 写入移动动作命令
+     */
+    public static void writeControlMove(final OutputStream outputStream, final Point screenSize, final Point point) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlMove(writer, screenSize, point.x, point.y);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 写入按下动作命令
+     */
+    public static void writeControlDown(final OutputStream outputStream, final Point screenSize, final Point point) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlDown(writer, screenSize, point.x, point.y);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 写入点击menu动作命令
+     */
+    public static void writeControlMenu(final OutputStream outputStream) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlMenu(writer);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 写入点击back动作命令
+     */
+    public static void writeControlBack(final OutputStream outputStream) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlBack(writer);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 写入点击home动作命令
+     */
+    public static void writeControlHome(final OutputStream outputStream) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlHome(writer);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 写入旋转动作命令
+     */
+    public static void writeControlDegree(final OutputStream outputStream, final int degree) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlDegree(writer, degree);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 构建抬起动作命令
+     */
+    private static void controlUp(BufferedWriter writer, Point screenSize, int x, int y) throws IOException {
+        writer.write(UP + (x * 1.0f / screenSize.x) + XYDECORATION + (y * 1.0f / screenSize.y));
+        writer.newLine();
+        writer.flush();
+    }
+
+    /**
+     * 构建移动动作命令
+     */
+    private static void controlMove(BufferedWriter writer, Point screenSize, int x, int y) throws IOException {
+        writer.write(MOVE + (x * 1.0f / screenSize.x) + XYDECORATION + (y * 1.0f / screenSize.y));
+        writer.newLine();
+        writer.flush();
+    }
+
+    /**
+     * 构建按下动作命令
+     */
+    private static void controlDown(BufferedWriter writer, Point screenSize, int x, int y) throws IOException {
+        writer.write(DOWN + (x * 1.0f / screenSize.x) + XYDECORATION + (y * 1.0f / screenSize.y));
+        writer.newLine();
+        writer.flush();
+    }
+
+    /**
+     * 构建点击menu动作命令
+     */
+    private static void controlMenu(BufferedWriter writer) throws IOException {
+        writer.write(MENU);
+        writer.newLine();
+        writer.flush();
+    }
+
+    /**
+     * 构建点击back动作命令
+     */
+    private static void controlBack(BufferedWriter writer) throws IOException {
+        writer.write(BACK);
+        writer.newLine();
+        writer.flush();
+    }
+
+    /**
+     * 构建点击home动作命令
+     */
+    private static void controlHome(BufferedWriter writer) throws IOException {
+        writer.write(HOME);
+        writer.newLine();
+        writer.flush();
+    }
+
+    /**
+     * 构建旋转动作命令
+     */
+    private static void controlDegree(BufferedWriter writer, int degree) throws IOException {
+        writer.write(DEGREE + degree);
+        writer.newLine();
+        writer.flush();
+    }
+
+    private static class ThreadPoolProxy {
+
+        ThreadPoolExecutor mExecutor;
+        private int mCorePoolSize;
+        private int mMaximumPoolSize;
+
+
+        /**
+         * @param corePoolSize    核心池的大小
+         * @param maximumPoolSize 最大线程数
+         */
+        public ThreadPoolProxy(int corePoolSize, int maximumPoolSize) {
+            mCorePoolSize = corePoolSize;
+            mMaximumPoolSize = maximumPoolSize;
+        }
+
+        /**
+         * 初始化ThreadPoolExecutor
+         * 双重检查加锁,只有在第一次实例化的时候才启用同步机制,提高了性能
+         */
+        private void initThreadPoolExecutor() {
+            if (mExecutor == null || mExecutor.isShutdown() || mExecutor.isTerminated()) {
+                synchronized (ThreadPoolProxy.class) {
+                    if (mExecutor == null || mExecutor.isShutdown() || mExecutor.isTerminated()) {
+                        long keepAliveTime = 3000;
+                        TimeUnit unit = TimeUnit.MILLISECONDS;
+                        BlockingQueue workQueue = new LinkedBlockingDeque<>();
+                        ThreadFactory threadFactory = Executors.defaultThreadFactory();
+                        RejectedExecutionHandler handler = new ThreadPoolExecutor.DiscardPolicy();
+
+                        mExecutor = new ThreadPoolExecutor(mCorePoolSize, mMaximumPoolSize, keepAliveTime, unit, workQueue,
+                                threadFactory, handler);
+                    }
+                }
+            }
+        }
+        /**
+         执行任务和提交任务的区别?
+         1.有无返回值
+         execute->没有返回值
+         submit-->有返回值
+         2.Future的具体作用?
+         1.有方法可以接收一个任务执行完成之后的结果,其实就是get方法,get方法是一个阻塞方法
+         2.get方法的签名抛出了异常===>可以处理任务执行过程中可能遇到的异常
+         */
+        /**
+         * 执行任务
+         */
+        public void execute(Runnable task) {
+            initThreadPoolExecutor();
+            mExecutor.execute(task);
+        }
+
+        /**
+         * 提交任务
+         */
+        public Future submit(Runnable task) {
+            initThreadPoolExecutor();
+            return mExecutor.submit(task);
+        }
+
+        /**
+         * 移除任务
+         */
+        public void remove(Runnable task) {
+            initThreadPoolExecutor();
+            mExecutor.remove(task);
+        }
     }
 }
