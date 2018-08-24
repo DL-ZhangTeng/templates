@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.hardware.input.InputManager;
 import android.os.SystemClock;
 import android.support.v4.view.InputDeviceCompat;
+import android.util.Log;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -28,17 +29,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 屏幕控制类
+ * 屏幕控制类(需要升级为系统应用或root权限)
  */
 public class ${className} {
 
-    private static InputManager im;
-    private static Method injectInputEventMethod;
-    private static long downTime;
-    private static float scale = 0;
-
-    private static ThreadPoolProxy mThreadPoolProxy = new ThreadPoolProxy(1, 1);
-    
+   
     /**
      * xy坐标分割标示
      */
@@ -49,18 +44,29 @@ public class ${className} {
     private final static String DOWN = "DOWN";
     private final static String MOVE = "MOVE";
     private final static String UP = "UP";
-
     private final static String MENU = "MENU";
     private final static String HOME = "HOME";
     private final static String BACK = "BACK";
-
     private final static String DEGREE = "DEGREE";
+    private final static String TAP = "TAP";
+    private final static String SWIPE = "SWIPE";
+    private static InputManager im;
+    private static Method injectInputEventMethod;
+    private static long downTime;
+    private static float scale = 0;
+    private static ThreadPoolProxy mThreadPoolProxy = new ThreadPoolProxy(1, 1);
+    private static OutputStream os = null;
+
+    /////////////////////////////////////////////////////////////
+    /////////////////////////受控端//////////////////////////////
+    /////////////////////////////////////////////////////////////
 
     static {
         try {
             im = (InputManager) InputManager.class.getDeclaredMethod("getInstance", new Class[0]).invoke(null, new Object[0]);
             MotionEvent.class.getDeclaredMethod("obtain", new Class[0]).setAccessible(true);
             injectInputEventMethod = InputManager.class.getMethod("injectInputEvent", new Class[]{InputEvent.class, Integer.TYPE});
+
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -70,10 +76,6 @@ public class ${className} {
         }
 
     }
-
-    /////////////////////////////////////////////////////////////
-    /////////////////////////受控端//////////////////////////////
-    /////////////////////////////////////////////////////////////
 
     /**
      * @param inputStream 数据流，根据流中的数据做出相应的操作
@@ -113,6 +115,10 @@ public class ${className} {
                                 handlerBack();
                             } else if (line.startsWith(DEGREE)) {
                                 scale = Float.parseFloat(line.substring(DEGREE.length())) / 100;
+                            } else if (line.startsWith(TAP)) {
+                                execAdbTap(line.substring(TAP.length()), screenSize);
+                            } else if (line.startsWith(SWIPE)) {
+                                execAdbSwipe(line.substring(SWIPE.length()), screenSize);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -130,7 +136,7 @@ public class ${className} {
     /**
      * 抬起动作
      */
-    public static void handlerUp(String line, Point screenSize) {
+    private static void handlerUp(String line, Point screenSize) {
         Point point = getXY(line, screenSize);
         if (point != null) {
             try {
@@ -144,7 +150,7 @@ public class ${className} {
     /**
      * 移动动作
      */
-    public static void hanlerMove(String line, Point screenSize) {
+    private static void hanlerMove(String line, Point screenSize) {
         Point point = getXY(line, screenSize);
         if (point != null) {
             try {
@@ -158,7 +164,7 @@ public class ${className} {
     /**
      * 按下动作
      */
-    public static void hanlerDown(String line, Point screenSize) {
+    private static void hanlerDown(String line, Point screenSize) {
         Point point = getXY(line, screenSize);
         if (point != null) {
             try {
@@ -172,7 +178,7 @@ public class ${className} {
     /**
      * 按menu键
      */
-    public static void handlerMenu() {
+    private static void handlerMenu() {
         try {
             menu();
         } catch (InvocationTargetException e) {
@@ -185,7 +191,7 @@ public class ${className} {
     /**
      * 按返回键
      */
-    public static void handlerBack() {
+    private static void handlerBack() {
         try {
             back();
         } catch (InvocationTargetException e) {
@@ -198,7 +204,7 @@ public class ${className} {
     /**
      * 按返home键
      */
-    public static void handerHome() {
+    private static void handerHome() {
         try {
             pressHome();
         } catch (InvocationTargetException e) {
@@ -209,20 +215,90 @@ public class ${className} {
     }
 
     /**
+     * 执行ADB命令： input tap 125 340
+     */
+    private static void execAdbTap(String line, Point screenSize) {
+        Point point = getXY(line, screenSize);
+        String cmd = "input tap " + point.x + " " + point.y + " \n";
+        try {
+            if (os == null) {
+                os = Runtime.getRuntime().exec("su").getOutputStream();
+            }
+            os.write(cmd.getBytes());
+            os.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("execAdb", e.getMessage());
+        }
+    }
+
+    /**
+     * 执行ADB命令： input tap 125 340
+     */
+    private static void execAdbSwipe(String line, Point screenSize) {
+        Point point = getXY(line, screenSize);
+        Point point1 = getXYE(line, screenSize);
+        int time = getTime(line);
+        String cmd = "input swipe " + point.x + " " + point.y + " " + point1.x + " " + point1.y + " " + time + " \n";
+        try {
+            if (os == null) {
+                os = Runtime.getRuntime().exec("su").getOutputStream();
+            }
+            os.write(cmd.getBytes());
+            os.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("execAdb", e.getMessage());
+        }
+    }
+
+    /**
      * 分离xy数据
      */
     private static Point getXY(String nums, Point point) {
         try {
+            Point point1 = new Point();
             String[] s = nums.split(XYDECORATION);
             float scaleX = Float.parseFloat(s[0]);
             float scaleY = Float.parseFloat(s[1]);
-            point.x *= scaleX;
-            point.y *= scaleY;
-            return point;
+            point1.x = (int) (point.x * scaleX);
+            point1.y = (int) (point.y * scaleY);
+            return point1;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 分离终点xy数据
+     */
+    private static Point getXYE(String nums, Point point) {
+        try {
+            Point point1 = new Point();
+            String[] s = nums.split(XYDECORATION);
+            float scaleX = Float.parseFloat(s[2]);
+            float scaleY = Float.parseFloat(s[3]);
+            point1.x = (int) (point.x * scaleX);
+            point1.y = (int) (point.y * scaleY);
+            return point1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 分离时间数据
+     */
+    private static int getTime(String nums) {
+        try {
+            String[] s = nums.split(XYDECORATION);
+            return Integer.parseInt(s[4]);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     /**
@@ -478,6 +554,54 @@ public class ${className} {
     }
 
     /**
+     * 写入adb Tap命令  input [touchscreen|touchpad|touchnavigation] tap <x> <y>
+     */
+    public static void writeControlAdbTap(final OutputStream outputStream, final Point screenSize, final Point point) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlAdbTap(writer, screenSize, point.x, point.y);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 写入adb swipe命令    input [touchscreen|touchpad|touchnavigation] swipe <x1> <y1> <x2> <y2> [duration(ms)]
+     */
+    public static void writeControlAdbSwipe(final OutputStream outputStream, final Point screenSize, final Point start, final Point end, final int time) {
+        if (mThreadPoolProxy == null) {
+            mThreadPoolProxy = new ThreadPoolProxy(100, 100);
+        }
+        mThreadPoolProxy.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    try {
+                        controlAdbSwipe(writer, screenSize, start.x, start.y, end.x, end.y, time);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
      * 构建抬起动作命令
      */
     private static void controlUp(BufferedWriter writer, Point screenSize, int x, int y) throws IOException {
@@ -536,6 +660,26 @@ public class ${className} {
      */
     private static void controlDegree(BufferedWriter writer, int degree) throws IOException {
         writer.write(DEGREE + degree);
+        writer.newLine();
+        writer.flush();
+    }
+
+    /**
+     * 构建adb命令
+     */
+    private static void controlAdbTap(BufferedWriter writer, Point screenSize, int x, int y) throws IOException {
+        writer.write(TAP + (x * 1.0f / screenSize.x) + XYDECORATION + (y * 1.0f / screenSize.y));
+        writer.newLine();
+        writer.flush();
+    }
+
+    /**
+     * 构建adb命令
+     */
+    private static void controlAdbSwipe(BufferedWriter writer, Point screenSize, int xs, int ys, int xe, int ye, int time) throws IOException {
+        writer.write(SWIPE + (xs * 1.0f / screenSize.x) + XYDECORATION + (ys * 1.0f / screenSize.y)
+                + XYDECORATION + (xe * 1.0f / screenSize.x) + XYDECORATION + (ye * 1.0f / screenSize.y)
+                + XYDECORATION + time);
         writer.newLine();
         writer.flush();
     }
