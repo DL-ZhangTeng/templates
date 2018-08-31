@@ -230,16 +230,14 @@ public class RefreshLayout extends ViewGroup {
                 if (getScrollY() <= -mEffectiveHeaderHeight) {
                     releaseWithStatusRefresh();
                     if (mRefreshListener != null) {
-                        mRefreshListener.refreshFinished();
-                        refreshFinished();
+                        mRefreshListener.onRefresh(this);
                     }
                 }
                 // 上拉加载更多，达到有效长度
                 else if (getScrollY() >= mEffictiveFooterHeight) {
                     releaseWithStatusLoadMore();
                     if (mRefreshListener != null) {
-                        mRefreshListener.loadMoreFinished();
-                        loadMoreFinished();
+                        mRefreshListener.onLoadMore(this);
                     }
                 } else {
                     releaseWithStatusTryRefresh();
@@ -452,8 +450,8 @@ public class RefreshLayout extends ViewGroup {
     }
 
     public interface OnRefreshListener {
-        void refreshFinished();
+        void onRefresh(RefreshLayout refreshLayout);
 
-        void loadMoreFinished();
+        void onLoadMore(RefreshLayout refreshLayout);
     }
 }

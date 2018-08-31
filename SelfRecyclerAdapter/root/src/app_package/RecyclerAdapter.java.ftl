@@ -1,6 +1,5 @@
 package ${packageName};
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,13 @@ import java.util.ArrayList;
 
 public class ${adapterClass} extends RecyclerView.Adapter<${adapterClass}.${viewHolder}>{
 
-    private ArrayList<String> mData;
+    private ArrayList<${beanClass}> mData;
 
-    public ${adapterClass}(ArrayList<String> data) {
+    public ${adapterClass}(ArrayList<${beanClass}> data) {
         this.mData = data;
     }
 
-    public void updateData(ArrayList<String> data) {
+    public void updateData(ArrayList<${beanClass}> data) {
         this.mData = data;
         notifyDataSetChanged();
     }
