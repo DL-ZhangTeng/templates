@@ -107,6 +107,7 @@ public class MyTabLayout extends HorizontalScrollView {
      * @see #getTabGravity()
      */
     public static final int GRAVITY_CENTER = 1;
+	private static Integer gapTextIcon = null;
     static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
     static final int FIXED_WRAP_GUTTER_MIN = 16; //dps
     static final int MOTION_NON_ADJACENT_OFFSET = 24;
@@ -193,7 +194,9 @@ public class MyTabLayout extends HorizontalScrollView {
 
         mTabTextAppearance = a.getResourceId(R.styleable.MyTabLayout_tabMyTextAppearance,
                 R.style.TextAppearance_Design_Tab);
-
+				
+		gapTextIcon = a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyTextIconGap, dpToPx(DEFAULT_GAP_TEXT_ICON));
+		
         // Text colors/sizes come from the text appearance first
         final TypedArray ta = context.obtainStyledAttributes(mTabTextAppearance,
                 android.support.v7.appcompat.R.styleable.TextAppearance);
@@ -1838,7 +1841,7 @@ public class MyTabLayout extends HorizontalScrollView {
                 int bottomMargin = 0;
                 if (hasText && iconView.getVisibility() == VISIBLE) {
                     // If we're showing both text and icon, add some margin bottom to the icon
-                    bottomMargin = dpToPx(DEFAULT_GAP_TEXT_ICON);
+                    bottomMargin = gapTextIcon == null ? dpToPx(DEFAULT_GAP_TEXT_ICON) : gapTextIcon;
                 }
                 if (bottomMargin != lp.bottomMargin) {
                     lp.bottomMargin = bottomMargin;

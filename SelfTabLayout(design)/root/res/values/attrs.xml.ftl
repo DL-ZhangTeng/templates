@@ -19,5 +19,6 @@
         <attr name="tabMyPaddingBottom" format="dimension" />
         <attr name="tabMyPaddingTop" format="dimension" />
         <attr name="tabMyPadding" format="dimension" />
+		<attr name="tabMyTextIconGap" format="dimension" />
     </declare-styleable>
 </resources>
