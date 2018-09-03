@@ -3,7 +3,6 @@ package ${packageName}.widget;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -33,7 +32,6 @@ import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.TintTypedArray;
 import android.support.v7.widget.TooltipCompat;
 import android.text.Layout;
 import android.text.TextUtils;
@@ -55,7 +53,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import  ${packageName}.R;
+import ${packageName}.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -67,6 +65,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
+
 
 /**
  * Created by swing on 2018/7/19.
@@ -370,7 +369,7 @@ public class MyTabLayout extends HorizontalScrollView {
         }
     }
 
-    private void addTabFromItemView(@NonNull TabItem item) {
+    private void addTabFromItemView(@NonNull MyTabItem item) {
         final MyTabLayout.Tab tab = newTab();
         if (item.mText != null) {
             tab.setText(item.mText);
@@ -857,10 +856,10 @@ public class MyTabLayout extends HorizontalScrollView {
     }
 
     private void addViewInternal(final View child) {
-        if (child instanceof TabItem) {
-            addTabFromItemView((TabItem) child);
+        if (child instanceof MyTabItem) {
+            addTabFromItemView((MyTabItem) child);
         } else {
-            throw new IllegalArgumentException("Only TabItem instances can be added to TabLayout");
+            throw new IllegalArgumentException("Only MyTabItem instances can be added to TabLayout");
         }
     }
 
@@ -1139,7 +1138,7 @@ public class MyTabLayout extends HorizontalScrollView {
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
         // We don't care about the layout params of any views added to us, since we don't actually
         // add them. The only view we add is the SlidingTabStrip, which is done manually.
-        // We return the default layout params so that we don't blow up if we're given a TabItem
+        // We return the default layout params so that we don't blow up if we're given a MyTabItem
         // without android:layout_* values.
         return generateDefaultLayoutParams();
     }
@@ -2184,28 +2183,6 @@ public class MyTabLayout extends HorizontalScrollView {
 
         void setAutoRefresh(boolean autoRefresh) {
             mAutoRefresh = autoRefresh;
-        }
-    }
-
-    class TabItem extends View {
-        final CharSequence mText;
-        final Drawable mIcon;
-        final int mCustomLayout;
-
-        public TabItem(Context context) {
-            this(context, null);
-        }
-
-        @SuppressLint("RestrictedApi")
-        public TabItem(Context context, AttributeSet attrs) {
-            super(context, attrs);
-
-            final TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attrs,
-                    R.styleable.TabItem);
-            mText = a.getText(R.styleable.TabItem_android_text);
-            mIcon = a.getDrawable(R.styleable.TabItem_android_icon);
-            mCustomLayout = a.getResourceId(R.styleable.TabItem_android_layout, 0);
-            a.recycle();
         }
     }
 
