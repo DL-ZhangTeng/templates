@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<template
+    format="5"
+    revision="3"
+    name="Dialog (Base)"
+    description="Creates a base Dialog"
+    minApi="7"
+    minBuildApi="8">
+
+    <category value="Dialog" />
+
+    <dependency name="android-support-v4" revision="8" />
+
+	 <parameter
+        id="isFirstDialog"
+        name="is First Dialog?"
+        type="boolean"
+        default="false"
+        help="Create a base class to BaseFragment" />
+		
+    <parameter
+        id="className"
+        name="Dialog Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BaseDialog"
+        help="The name of the Dialog class to create" />
+
+    <thumbs>
+        <thumb>template_base_fragment.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
