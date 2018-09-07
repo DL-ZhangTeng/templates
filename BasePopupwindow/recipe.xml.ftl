@@ -2,12 +2,11 @@
 <#import "root://activities/common/kotlin_macros.ftl" as kt>
 <recipe>
   
+    <#if isFirstPopupWindow>
     <merge from="root/res/values/styles.xml" to="${escapeXmlAttribute(resOut)}/values/styles.xml" />
 	<merge from="root/res/anim/self_popupwindow_showasdropdown_close.xml" to="${escapeXmlAttribute(resOut)}/anim/self_popupwindow_showasdropdown_close.xml" />
 	<merge from="root/res/anim/self_popupwindow_showasdropdown_open.xml" to="${escapeXmlAttribute(resOut)}/anim/self_popupwindow_showasdropdown_open.xml" />
 	<merge from="root/res/drawable/self_popupwindow_round_bg.xml" to="${escapeXmlAttribute(resOut)}/drawable/self_popupwindow_round_bg.xml" />
-
-    <#if isFirstPopupWindow>
         <instantiate from="root/res/layout/self_base_popupwindow.xml.ftl"
                        to="${escapeXmlAttribute(resOut)}/layout/self_base_popupwindow.xml" />
 
