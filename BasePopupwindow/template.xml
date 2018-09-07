@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<template
+    format="5"
+    revision="3"
+    name="PopupWindow (Base)"
+    description="Creates a base PopupWindow"
+    minApi="7"
+    minBuildApi="8">
+
+    <category value="PopupWindow" />
+
+    <dependency name="android-support-v4" revision="8" />
+
+	 <parameter
+        id="isFirstPopupWindow"
+        name="is First PopupWindow?"
+        type="boolean"
+        default="false"
+        help="Create a base class to BasePopupWindow" />
+		
+    <parameter
+        id="className"
+        name="PopupWindow Name"
+        type="string"
+        constraints="class|nonempty|unique"
+        default="BasePopupWindow"
+        help="The name of the PopupWindow class to create" />
+
+    <thumbs>
+        <thumb>template_base_fragment.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>

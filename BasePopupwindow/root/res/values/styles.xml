@@ -1,0 +1,6 @@
+<resources>
+    <style name="showAsDropDown">
+        <item name="android:windowEnterAnimation">@anim/self_popupwindow_showasdropdown_open</item>
+        <item name="android:windowExitAnimation">@anim/self_popupwindow_showasdropdown_close</item>
+    </style>
+</resources>

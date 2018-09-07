@@ -7,7 +7,7 @@
     minBuildApi="14"
     description="Creates a new TimePicker">
 
-    <category value="Widget" />
+    <category value="PopupWindow" />
     <formfactor value="Mobile" />
 
     <parameter
