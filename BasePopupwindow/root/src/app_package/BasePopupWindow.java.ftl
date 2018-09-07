@@ -24,6 +24,9 @@ public <#if isFirstPopupWindow> abstract </#if> class ${className} extends <#if 
     protected LinearLayout clTitle;
     protected ConstraintLayout clContent;
     protected LinearLayout clButton;
+	
+	protected OnCancelClickListener onCancelClickListener;
+    protected OnConfirmClickListener onConfirmClickListener;
 </#if>
 <#if isFirstPopupWindow>
     public ${className}(Context context) {
@@ -78,6 +81,46 @@ public <#if isFirstPopupWindow> abstract </#if> class ${className} extends <#if 
     public abstract int getSelfButtonView();
 
     public abstract void initView(View view);
+	
+	public void setOnCancelClickListener(OnCancelClickListener onCancelClickListener) {
+        this.onCancelClickListener = onCancelClickListener;
+        if (clButton.getChildCount() > 0 && clButton.getChildAt(0) instanceof ViewGroup) {
+            if (((ViewGroup) clButton.getChildAt(0)).getChildAt(0) != null) {
+                ((ViewGroup) clButton.getChildAt(0)).getChildAt(0).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (BasePopupWindow.this.onCancelClickListener != null) {
+                            BasePopupWindow.this.onCancelClickListener.onCancel(v);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    public void setOnConfirmClickListener(OnConfirmClickListener onConfirmClickListener) {
+        this.onConfirmClickListener = onConfirmClickListener;
+        if (clButton.getChildCount() > 0 && clButton.getChildAt(0) instanceof ViewGroup) {
+            if (((ViewGroup) clButton.getChildAt(0)).getChildAt(((ViewGroup) clButton.getChildAt(0)).getChildCount() - 1) != null) {
+                ((ViewGroup) clButton.getChildAt(0)).getChildAt(((ViewGroup) clButton.getChildAt(0)).getChildCount() - 1).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (BasePopupWindow.this.onConfirmClickListener != null) {
+                            BasePopupWindow.this.onConfirmClickListener.onConfirm(v);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    public interface OnCancelClickListener {
+        void onCancel(View view);
+    }
+
+    public interface OnConfirmClickListener {
+        void onConfirm(View view);
+    }
 
     @Override
     public void setContentView(View view) {
