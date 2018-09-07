@@ -13,7 +13,9 @@
         app:layout_constraintBottom_toTopOf="@id/self_base_popupwindow_content"
         app:layout_constraintLeft_toLeftOf="@id/self_base_popupwindow_content"
         app:layout_constraintRight_toRightOf="@id/self_base_popupwindow_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_bias="1"
+        app:layout_constraintVertical_chainStyle="packed"		/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/self_base_popupwindow_content"
@@ -22,7 +24,9 @@
         app:layout_constraintBottom_toTopOf="@id/self_base_popupwindow_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/self_base_popupwindow_title" />
+        app:layout_constraintTop_toBottomOf="@id/self_base_popupwindow_title"
+		app:layout_constraintVertical_bias="1"
+        app:layout_constraintVertical_chainStyle="packed"		/>
 
     <LinearLayout
         android:id="@+id/self_base_popupwindow_button"
@@ -33,5 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/self_base_popupwindow_content"
         app:layout_constraintRight_toRightOf="@id/self_base_popupwindow_content"
-        app:layout_constraintTop_toBottomOf="@id/self_base_popupwindow_content" />
+        app:layout_constraintTop_toBottomOf="@id/self_base_popupwindow_content"
+		app:layout_constraintVertical_bias="1"
+        app:layout_constraintVertical_chainStyle="packed"		/>
 </android.support.constraint.ConstraintLayout>
