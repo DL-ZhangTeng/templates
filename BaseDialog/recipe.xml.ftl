@@ -2,9 +2,9 @@
 <#import "root://activities/common/kotlin_macros.ftl" as kt>
 <recipe>
   
-    <merge from="root/res/values/styles.xml" to="${escapeXmlAttribute(resOut)}/values/styles.xml" />
 
     <#if isFirstDialog>
+    <merge from="root/res/values/styles.xml" to="${escapeXmlAttribute(resOut)}/values/styles.xml" />
         <instantiate from="root/res/layout/self_base_dialog.xml.ftl"
                        to="${escapeXmlAttribute(resOut)}/layout/self_base_dialog.xml" />
 
