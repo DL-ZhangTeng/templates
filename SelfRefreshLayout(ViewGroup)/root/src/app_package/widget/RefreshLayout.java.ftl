@@ -228,16 +228,24 @@ public class RefreshLayout extends ViewGroup {
             case MotionEvent.ACTION_UP:
                 // 下拉刷新，并且到达有效长度
                 if (getScrollY() <= -mEffectiveHeaderHeight) {
-                    releaseWithStatusRefresh();
-                    if (mRefreshListener != null) {
-                        mRefreshListener.onRefresh(this);
+                    if (refreshEable){
+                        releaseWithStatusRefresh();
+                        if (mRefreshListener != null) {
+                            mRefreshListener.onRefresh(this);
+                        }
+                    }else {
+                        releaseWithStatusTryRefresh();
                     }
                 }
                 // 上拉加载更多，达到有效长度
                 else if (getScrollY() >= mEffictiveFooterHeight) {
-                    releaseWithStatusLoadMore();
-                    if (mRefreshListener != null) {
-                        mRefreshListener.onLoadMore(this);
+                    if (loadEable){
+                        releaseWithStatusLoadMore();
+                        if (mRefreshListener != null) {
+                            mRefreshListener.onLoadMore(this);
+                        }
+                    }else {
+                        releaseWithStatusTryLoadMore();
                     }
                 } else {
                     releaseWithStatusTryRefresh();
@@ -258,8 +266,7 @@ public class RefreshLayout extends ViewGroup {
      */
     private boolean getRefreshIntercept(View child) {
         boolean intercept = false;
-
-        if (child instanceof AdapterView) {
+		if (child instanceof AdapterView) {
             intercept = adapterViewRefreshIntercept(child);
         } else if (child instanceof ScrollView) {
             intercept = scrollViewRefreshIntercept(child);
@@ -272,7 +279,6 @@ public class RefreshLayout extends ViewGroup {
 
     private boolean getLoadMoreIntercept(View child) {
         boolean intercept = false;
-
         if (child instanceof AdapterView) {
             intercept = adapterViewLoadMoreIntercept(child);
         } else if (child instanceof ScrollView) {
