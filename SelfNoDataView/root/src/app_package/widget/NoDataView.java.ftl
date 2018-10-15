@@ -24,6 +24,7 @@ public class ${className} extends LinearLayout {
     private LinearLayout llNoData;
     private TextView tvNoData;
     private ImageView ivNoData;
+	private boolean isNoDataViewShow = false;
 
     public ${className}(Context context) {
         super(context);
@@ -93,5 +94,12 @@ public class ${className} extends LinearLayout {
     public void setNoDataImageResource(int resourceId) {
         ivNoData.setImageResource(resourceId);
     }
+	
+	public boolean isNoDataViewShow() {
+        return isNoDataViewShow;
+    }
 
+    public void setNoDataViewShow(boolean noDataViewShow) {
+        isNoDataViewShow = noDataViewShow;
+    }
 }
