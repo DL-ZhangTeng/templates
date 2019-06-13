@@ -20,6 +20,7 @@
         <attr name="tabMyPaddingTop" format="dimension" />
         <attr name="tabMyPadding" format="dimension" />
 		<attr name="tabMyTextIconGap" format="dimension" />
+		<attr name="tabMyViewNumber" format="integer" />
     </declare-styleable>
 	<declare-styleable name="MyTabItem">
         <attr name="myText" format="string" />

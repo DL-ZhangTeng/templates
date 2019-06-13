@@ -12,5 +12,6 @@
         <item name="tabMyBackground">?attr/selectableItemBackground</item>
         <item name="tabMyTextAppearance">@style/TextAppearance.Design.Tab</item>
         <item name="tabMySelectedTextColor">?android:textColorPrimary</item>
+		<item name="tabMyViewNumber">5</item>
     </style>
 </resources>

@@ -22,7 +22,13 @@
         app:layout_constraintBottom_toTopOf="@id/self_base_dialog_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/self_base_dialog_title" />
+        app:layout_constraintTop_toBottomOf="@id/self_base_dialog_title" >
+		 <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#E6E6E6"
+            app:layout_constraintBottom_toBottomOf="parent" />
+	</android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/self_base_dialog_button"

@@ -106,7 +106,6 @@ public class MyTabLayout extends HorizontalScrollView {
      * @see #getTabGravity()
      */
     public static final int GRAVITY_CENTER = 1;
-	private static Integer gapTextIcon = null;
     static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
     static final int FIXED_WRAP_GUTTER_MIN = 16; //dps
     static final int MOTION_NON_ADJACENT_OFFSET = 24;
@@ -116,12 +115,13 @@ public class MyTabLayout extends HorizontalScrollView {
     private static final int TAB_MIN_WIDTH_MARGIN = 56; //dps
     private static final int ANIMATION_DURATION = 300;
     private static final Pools.Pool<MyTabLayout.Tab> sTabPool = new Pools.SynchronizedPool<>(16);
+    private static Integer gapTextIcon = null;
     final int mTabBackgroundResId;
     private final ArrayList<MyTabLayout.Tab> mTabs = new ArrayList<>();
     private final MyTabLayout.SlidingTabStrip mTabStrip;
-    private final int mRequestedTabMinWidth;
-    private final int mRequestedTabMaxWidth;
-    private final int mScrollableTabMinWidth;
+    private int mRequestedTabMinWidth;
+    private int mRequestedTabMaxWidth;
+    private int mScrollableTabMinWidth;
     private final ArrayList<MyTabLayout.OnTabSelectedListener> mSelectedListeners = new ArrayList<>();
     // Pool we use as a simple RecyclerBin
     private final Pools.Pool<MyTabLayout.TabView> mTabViewPool = new Pools.SimplePool<>(12);
@@ -193,9 +193,9 @@ public class MyTabLayout extends HorizontalScrollView {
 
         mTabTextAppearance = a.getResourceId(R.styleable.MyTabLayout_tabMyTextAppearance,
                 R.style.TextAppearance_Design_Tab);
-				
-		gapTextIcon = a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyTextIconGap, dpToPx(DEFAULT_GAP_TEXT_ICON));
-		
+
+        gapTextIcon = a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyTextIconGap, dpToPx(DEFAULT_GAP_TEXT_ICON));
+
         // Text colors/sizes come from the text appearance first
         final TypedArray ta = context.obtainStyledAttributes(mTabTextAppearance,
                 android.support.v7.appcompat.R.styleable.TextAppearance);
@@ -229,8 +229,12 @@ public class MyTabLayout extends HorizontalScrollView {
         mContentInsetStart = a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyContentStart, 0);
         mMode = a.getInt(R.styleable.MyTabLayout_tabMyMode, MODE_FIXED);
         mTabGravity = a.getInt(R.styleable.MyTabLayout_tabMyGravity, GRAVITY_FILL);
-        a.recycle();
 
+        int tabViewNumber = a.getInt(R.styleable.MyTabLayout_tabMyViewNumber, 5);
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        mRequestedTabMinWidth = screenWidth / tabViewNumber;
+
+        a.recycle();
         // TODO add attr for these
         final Resources res = getResources();
         mTabTextMultiLineSize = res.getDimensionPixelSize(R.dimen.design_tab_text_size_2line);
@@ -1314,6 +1318,19 @@ public class MyTabLayout extends HorizontalScrollView {
         }
 
         /**
+         * Set the icon displayed on this tab.
+         *
+         * @param icon The drawable to use as an icon
+         * @return The current instance for call chaining
+         */
+        @NonNull
+        public MyTabLayout.Tab setIcon(@Nullable Drawable icon) {
+            mIcon = icon;
+            updateView();
+            return this;
+        }
+
+        /**
          * Return the current position of this tab in the action bar.
          *
          * @return Current position, or {@link #INVALID_POSITION} if this tab is not currently in
@@ -1353,19 +1370,6 @@ public class MyTabLayout extends HorizontalScrollView {
         }
 
         /**
-         * Set the icon displayed on this tab.
-         *
-         * @param icon The drawable to use as an icon
-         * @return The current instance for call chaining
-         */
-        @NonNull
-        public MyTabLayout.Tab setIcon(@Nullable Drawable icon) {
-            mIcon = icon;
-            updateView();
-            return this;
-        }
-
-        /**
          * Set the text displayed on this tab. Text may be truncated if there is not room to display
          * the entire string.
          *
@@ -1400,6 +1404,18 @@ public class MyTabLayout extends HorizontalScrollView {
         }
 
         /**
+         * Gets a brief description of this tab's content for use in accessibility support.
+         *
+         * @return Description of this tab's content
+         * @see #setContentDescription(CharSequence)
+         * @see #setContentDescription(int)
+         */
+        @Nullable
+        public CharSequence getContentDescription() {
+            return mContentDesc;
+        }
+
+        /**
          * Set a description of this tab's content for use in accessibility support. If no content
          * description is provided the title will be used.
          *
@@ -1414,18 +1430,6 @@ public class MyTabLayout extends HorizontalScrollView {
                 throw new IllegalArgumentException("Tab not attached to a TabLayout");
             }
             return setContentDescription(mParent.getResources().getText(resId));
-        }
-
-        /**
-         * Gets a brief description of this tab's content for use in accessibility support.
-         *
-         * @return Description of this tab's content
-         * @see #setContentDescription(CharSequence)
-         * @see #setContentDescription(int)
-         */
-        @Nullable
-        public CharSequence getContentDescription() {
-            return mContentDesc;
         }
 
         /**
