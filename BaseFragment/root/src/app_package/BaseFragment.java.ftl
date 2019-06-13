@@ -1,20 +1,23 @@
 package ${packageName}<#if isFirstFragment>.base<#else>.fragment</#if>;
 
-import android.os.Bundle;
 <#if isFirstFragment>
+import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android${SupportPackage}.app.Fragment;
-</#if>
-<#if isFirstFragment> 
-import android.view.LayoutInflater;
-</#if>
+import android.support.v4.app.Fragment;
 import android.view.View;
-<#if isFirstFragment> 
+</#if>
+<#if !isFirstFragment> 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import ${packageName}.R;
 import ${packageName}.base.BaseFragment;
 </#if>
+
 /**
  *
  */
@@ -58,24 +61,23 @@ public <#if isFirstFragment> abstract </#if> class ${className} extends <#if isF
         }
     }
 </#if>
-<#if includeNewInstance>
-	@Override
-</#if>
-    protected <#if isFirstFragment> abstract </#if>int getResourceId() <#if isFirstFragment> ; <#else>{
-<#if includeLayout>
-       return R.layout.${fragmentName};
-</#if>
-    }
-</#if> 
 
-<#if includeNewInstance>
+<#if !isFirstFragment>
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(<#if includeLayout>R.layout.${fragmentName}<#else>null</#if>, container, false);
+    }
+</#if>
+
+<#if !isFirstFragment>
 	@Override
 </#if>
     protected <#if isFirstFragment> abstract </#if>void initView(View view) <#if isFirstFragment> ; <#else> {
 
     }
 </#if> 
-<#if includeNewInstance>
+<#if !isFirstFragment>
 	@Override
 </#if>
     protected void initData() {
@@ -83,20 +85,6 @@ public <#if isFirstFragment> abstract </#if> class ${className} extends <#if isF
 		super.initData();
 </#if> 
     }
-<#if isFirstFragment> 
-	@Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (view == null) {
-            view = View.inflate(getActivity(), getResourceId(), null);
-        } else {
-            Object parent = view.getParent();
-            if (parent != null && parent instanceof ViewGroup) {
-                ((ViewGroup) parent).removeView(view);
-            }
-        }
-        return view;
-    }
-</#if> 
 <#if isFirstFragment> 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -121,11 +109,4 @@ public <#if isFirstFragment> abstract </#if> class ${className} extends <#if isF
 		super.showToast(msg);
 	</#if> 
     }
-
-    public void onFragmentBackOrComing() {
-	<#if !isFirstFragment>
-		super.onFragmentBackOrComing();
-	</#if> 
-    }
-	
 }

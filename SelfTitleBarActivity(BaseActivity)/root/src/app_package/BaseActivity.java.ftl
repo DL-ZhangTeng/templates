@@ -16,7 +16,7 @@ public class ${activityClass} extends TitlebarActivity {
 
     @Override
     protected void initView() {
-
+		super.initView();
     }
 
     @Override
