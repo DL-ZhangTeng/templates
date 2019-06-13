@@ -3,4 +3,9 @@
         <item name="android:windowEnterAnimation">@anim/self_popupwindow_showasdropdown_open</item>
         <item name="android:windowExitAnimation">@anim/self_popupwindow_showasdropdown_close</item>
     </style>
+	
+	   <style name="showAsDropUp">
+        <item name="android:windowEnterAnimation">@anim/self_popupwindow_showasdropup_open</item>
+        <item name="android:windowExitAnimation">@anim/self_popupwindow_showasdropup_close</item>
+    </style>
 </resources>

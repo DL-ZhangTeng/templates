@@ -1,12 +1,6 @@
 <?xml version="1.0"?>
 <recipe>
 	<#if isFirstActivity>
-	<instantiate from="root/res/layout/activity_base.xml.ftl"
-                   to="${escapeXmlAttribute(resOut)}/layout/${layoutName}.xml" />
-	<merge from="root/res/values/colors.xml.ftl"
-                   to="${escapeXmlAttribute(resOut)}/values/colors.xml" />
-	<merge from="root/res/values/dimens.xml.ftl"
-                   to="${escapeXmlAttribute(resOut)}/values/dimens.xml" />
 	<#else>
     <instantiate from="root/res/layout/activity_main.xml.ftl"
                    to="${escapeXmlAttribute(resOut)}/layout/${layoutName}.xml" />
