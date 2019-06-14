@@ -17,11 +17,9 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/self_base_dialog_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/self_base_dialog_button"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/self_base_dialog_title" >
 		 <View
             android:layout_width="match_parent"
