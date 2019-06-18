@@ -231,7 +231,7 @@ public class MyTabLayout extends HorizontalScrollView {
         mTabGravity = a.getInt(R.styleable.MyTabLayout_tabMyGravity, GRAVITY_FILL);
 
         int tabViewNumber = a.getInt(R.styleable.MyTabLayout_tabMyViewNumber, 5);
-        if (tabViewNumber == -1){
+        if (tabViewNumber != -1){
             int screenWidth = getResources().getDisplayMetrics().widthPixels;
             mRequestedTabMinWidth = screenWidth / tabViewNumber;
         }
