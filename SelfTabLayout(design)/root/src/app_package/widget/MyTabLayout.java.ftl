@@ -250,7 +250,6 @@ public class MyTabLayout extends HorizontalScrollView {
             mRequestedTabMinWidth = screenWidth / tabViewNumber;
         }
 
-
         a.recycle();
         // TODO add attr for these
         final Resources res = getResources();
@@ -298,6 +297,14 @@ public class MyTabLayout extends HorizontalScrollView {
         mTabStrip.setSelectedIndicatorHeight(height);
     }
 
+	public void setSelectedIndicatorPaddingRight(int right) {
+        mTabStrip.setSelectedIndicatorPaddingRight(right);
+    }
+
+    public void setSelectedIndicatorPaddingLeft(int left) {
+        mTabStrip.setSelectedIndicatorPaddingLeft(left);
+    }
+	
     /**
      * Set the scroll position of the tabs. This is useful for when the tabs are being displayed as
      * part of a scrolling container such as {@link android.support.v4.view.ViewPager}.
