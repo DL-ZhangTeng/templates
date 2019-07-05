@@ -178,6 +178,14 @@ public class MyTabLayout extends HorizontalScrollView {
                 a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyIndicatorPaddingLeft, 0));
         mTabStrip.setSelectedIndicatorPaddingRight(
                 a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyIndicatorPaddingRight, 0));
+		mTabStrip.setSelectedIndicatorMarginBottom(
+                a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyIndicatorMarginBottom, 0));
+        mTabStrip.setSelectedIndicatorMarginTop(
+                a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyIndicatorMarginTop, 0));
+        mTabStrip.setSelectedIndicatorRoundRadius(
+                a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyIndicatorRoundRadius, 0));
+        mTabStrip.setSelectedIndicatorBottomLayer(
+                a.getBoolean(R.styleable.MyTabLayout_tabMyIndicatorBottomLayer, false));
         mTabStrip.setSelectedIndicatorColor(a.getColor(R.styleable.MyTabLayout_tabMyIndicatorColor, 0));
 
         mTabPaddingStart = mTabPaddingTop = mTabPaddingEnd = mTabPaddingBottom = a
@@ -225,7 +233,13 @@ public class MyTabLayout extends HorizontalScrollView {
                 INVALID_WIDTH);
         mRequestedTabMaxWidth = a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyMaxWidth,
                 INVALID_WIDTH);
-        mTabBackgroundResId = a.getResourceId(R.styleable.MyTabLayout_tabMyBackground, 0);
+        if (mTabStrip.mTabIndicatorBottomLayer) {
+            mTabBackgroundResId = 0;
+            ViewCompat.setBackground(
+                    this, AppCompatResources.getDrawable(context, a.getResourceId(R.styleable.MyTabLayout_tabMyBackground, 0)));
+        } else {
+            mTabBackgroundResId = a.getResourceId(R.styleable.MyTabLayout_tabMyBackground, 0);
+        }
         mContentInsetStart = a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyContentStart, 0);
         mMode = a.getInt(R.styleable.MyTabLayout_tabMyMode, MODE_FIXED);
         mTabGravity = a.getInt(R.styleable.MyTabLayout_tabMyGravity, GRAVITY_FILL);
@@ -1889,6 +1903,13 @@ public class MyTabLayout extends HorizontalScrollView {
 
         private int mIndicatorPaddingLeft = -1;
         private int mIndicatorPaddingRight = -1;
+		
+		private int mIndicatorMarginTop = -1;
+        private int mIndicatorMarginBottom = -1;
+
+        private int mIndicatorRoundRadius = -1;
+
+        boolean mTabIndicatorBottomLayer = false;
 
         private ValueAnimator mIndicatorAnimator;
 
@@ -1922,6 +1943,34 @@ public class MyTabLayout extends HorizontalScrollView {
         void setSelectedIndicatorPaddingLeft(int left) {
             if (mIndicatorPaddingLeft != left) {
                 mIndicatorPaddingLeft = left;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+        }
+
+        void setSelectedIndicatorMarginBottom(int bottom) {
+            if (mIndicatorMarginBottom != bottom) {
+                mIndicatorMarginBottom = bottom;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+        }
+
+        void setSelectedIndicatorMarginTop(int top) {
+            if (mIndicatorMarginTop != top) {
+                mIndicatorMarginTop = top;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+        }
+
+        void setSelectedIndicatorRoundRadius(int roundRadius) {
+            if (mIndicatorRoundRadius != roundRadius) {
+                mIndicatorRoundRadius = roundRadius;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+        }
+
+        void setSelectedIndicatorBottomLayer(boolean bottomLayer) {
+            if (mTabIndicatorBottomLayer != bottomLayer) {
+                mTabIndicatorBottomLayer = bottomLayer;
                 ViewCompat.postInvalidateOnAnimation(this);
             }
         }
@@ -2140,20 +2189,39 @@ public class MyTabLayout extends HorizontalScrollView {
             }
         }
 
-        @Override
+          @Override
         public void draw(Canvas canvas) {
             super.draw(canvas);
+            if (!mTabIndicatorBottomLayer) {
+                drawIndicator(canvas);
+            }
+        }
 
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            drawIndicator(canvas);
+        }
+
+        private void drawIndicator(Canvas canvas) {
             // Thick colored underline below the current selection
             if (mIndicatorLeft >= 0 && mIndicatorRight > mIndicatorLeft) {
                 if (mIndicatorPaddingLeft >= 0
                         && mIndicatorPaddingRight >= 0
                         && (mIndicatorRight - mIndicatorPaddingRight > mIndicatorLeft + mIndicatorPaddingLeft)) {
-                    canvas.drawRect(mIndicatorLeft + mIndicatorPaddingLeft, getHeight() - mSelectedIndicatorHeight,
-                            mIndicatorRight - mIndicatorPaddingRight, getHeight(), mSelectedIndicatorPaint);
+                    if (mIndicatorMarginBottom >= 0) {
+                        canvas.drawRoundRect(mIndicatorLeft + mIndicatorPaddingLeft, getHeight() - mSelectedIndicatorHeight - mIndicatorMarginBottom,
+                                mIndicatorRight - mIndicatorPaddingRight, getHeight() - mIndicatorMarginBottom, mIndicatorRoundRadius, mIndicatorRoundRadius, mSelectedIndicatorPaint);
+                    } else if (mIndicatorMarginTop >= 0) {
+                        canvas.drawRoundRect(mIndicatorLeft + mIndicatorPaddingLeft, mIndicatorMarginTop,
+                                mIndicatorRight - mIndicatorPaddingRight, mSelectedIndicatorHeight, mIndicatorRoundRadius, mIndicatorRoundRadius, mSelectedIndicatorPaint);
+                    } else {
+                        canvas.drawRoundRect(mIndicatorLeft + mIndicatorPaddingLeft, getHeight() - mSelectedIndicatorHeight,
+                                mIndicatorRight - mIndicatorPaddingRight, getHeight(), mIndicatorRoundRadius, mIndicatorRoundRadius, mSelectedIndicatorPaint);
+                    }
                 } else {
-                    canvas.drawRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
-                            mIndicatorRight, getHeight(), mSelectedIndicatorPaint);
+                    canvas.drawRoundRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
+                            mIndicatorRight, getHeight(), mIndicatorRoundRadius, mIndicatorRoundRadius, mSelectedIndicatorPaint);
                 }
             }
         }
