@@ -7,7 +7,7 @@
                    to="${escapeXmlAttribute(srcOut)}/mvp/base/BasePresenter.java" />
     <instantiate from="root/src/app_package/mvp/base/BaseView.java.ftl"
                    to="${escapeXmlAttribute(srcOut)}/mvp/base/BaseView.java" />
-	<#else>
+	</#if>
     <instantiate from="root/src/app_package/mvp/model/MainModel.java.ftl"
                    to="${escapeXmlAttribute(srcOut)}/mvp/model/${model}.java" />
     <instantiate from="root/src/app_package/mvp/presenter/MainPresenter.java.ftl"
