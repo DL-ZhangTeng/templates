@@ -9,7 +9,12 @@
 
     <category value="Mode" />
     <formfactor value="Mobile" />
-
+	<parameter
+        id="isBaseMVP"
+        name="is BaseMVP File?"
+        type="boolean"
+        default="false"
+        help="If true, a BaseMVP file will be generated" />
     <parameter
         id="presenter"
         name="Presenter Name"
