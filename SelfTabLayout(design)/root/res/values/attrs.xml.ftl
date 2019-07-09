@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
      <declare-styleable name="MyTabLayout">
-        <attr name="tabMyGravity" format="integer">
-            <enum name="GRAVITY_FILL" value="0" />
-            <enum name="GRAVITY_CENTER" value="1" />
+        <attr name="tabMyGravity" format="enum">
+            <enum name="gravity_fill" value="0" />
+            <enum name="gravity_center" value="1" />
         </attr>
-        <attr name="tabMyMode" format="integer">
-            <enum name="MODE_SCROLLABLE" value="0" />
-            <enum name="MODE_FIXED" value="1" />
+        <attr name="tabMyMode" format="enum">
+            <enum name="mode_scrollable" value="0" />
+            <enum name="mode_fixed" value="1" />
         </attr>
         <attr name="tabMyIndicatorColor" format="color" />
         <attr name="tabMyIndicatorHeight" format="dimension" />

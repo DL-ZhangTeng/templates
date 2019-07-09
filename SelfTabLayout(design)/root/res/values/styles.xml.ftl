@@ -2,8 +2,8 @@
     <style name="MyTabLayout">
         <item name="tabMyIndicatorPaddingLeft">0dp</item>
         <item name="tabMyIndicatorPaddingRight">0dp</item>
-        <item name="tabMyGravity">0</item>
-        <item name="tabMyMode">1</item>
+        <item name="tabMyGravity">gravity_fill</item>
+        <item name="tabMyMode">mode_fixed</item>
         <item name="tabMyMaxWidth">@dimen/design_tab_max_width</item>
         <item name="tabMyIndicatorColor">?attr/colorAccent</item>
         <item name="tabMyIndicatorHeight">2dp</item>
