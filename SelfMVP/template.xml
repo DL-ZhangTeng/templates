@@ -15,21 +15,32 @@
         type="boolean"
         default="false"
         help="If true, a BaseMVP file will be generated" />
+	<parameter
+        id="prefix"
+        name="Prefix Name"
+        type="string"
+        default=""/>
     <parameter
         id="presenter"
         name="Presenter Name"
         type="string"
+		suggest="${underscoreToCamelCase(classToResource(prefix))}Presenter"
+		constraints="class|unique|nonempty"
         default="Presenter"/>
 
     <parameter
         id="view"
         name="View Name"
         type="string"
+		constraints="class|unique|nonempty"
+		suggest="${underscoreToCamelCase(classToResource(prefix))}View"
         default="View"/>
     <parameter
         id="model"
         name="Model Name"
         type="string"
+		constraints="class|unique|nonempty"
+		suggest="${underscoreToCamelCase(classToResource(prefix))}Model"
         default="Model"/>
     <parameter
         id="packageName"
