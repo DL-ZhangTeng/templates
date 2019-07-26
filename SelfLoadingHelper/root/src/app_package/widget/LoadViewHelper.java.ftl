@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.util.SparseArray;
 import android.widget.TextView;
 
 import ${packageName}.widget.NoDataView;
@@ -14,51 +15,68 @@ import ${packageName}.R;
  * Created by swing on 2018/10/8.
  */
 public class LoadViewHelper {
-    protected View contentView;
-    protected NoDataView noDataView;
+    private SparseArray<View> contentViews;
+    private SparseArray<NoDataView> noDataViews;
     private Dialog mProgressDialog;
     private TextView loadView;
-
+	private AgainRequestListener againRequestListener;
+	
+	private final static int FOUNDNODATA = 0;
+	private final static int NETWORKNO = 1;
+   
     /**
-     * 显示无数据view
+     * 搜索无数据view
      *
      * @param currentView 需要替换的view
      */
-    public void showNodataView(View currentView) {
-        showNodataView(currentView, R.mipmap.ic_launcher, "无数据");
+    public void showFoundNodataView(View currentView) {
+        showNodataView(FOUNDNODATA, currentView, R.mipmap.ic_launcher, "搜索无结果", "");
     }
 
-    private AgainRequestListener againRequestListener;
+	/**
+     * 网络无数据view
+     *
+     * @param currentView 需要替换的view
+     */
+    public void showNetNodataView(View currentView) {
+        showNodataView(NETWORKNO, currentView, R.mipmap.ic_launcher, "无网络", "点击重试");
+    }
+	
 
     /**
      * 显示无数据view
      *
      * @param currentView 需要替换的view
      */
-    public void showNodataView(View currentView, int drawableRes, String nodataText) {
-        if (contentView == null) {
-            contentView = currentView;
+    private void showNodataView(int type, View currentView, int drawableRes, String nodataText, String nodataAgainText) {
+        if (contentViews.get(type, null) == null) {
+            contentViews.put(type, currentView);
         }
-        if (noDataView == null) {
-            noDataView = new NoDataView(contentView.getContext());
-            noDataView.setOnClickListener(new View.OnClickListener() {
+        if (noDataViews.get(type, null) == null) {
+            noDataViews.put(type, new NoDataView(contentViews.get(type).getContext()));
+            noDataViews.get(type).setAgainRequestListener(new NoDataView.AgainRequestListener() {
                 @Override
-                public void onClick(View v) {
+                public void request() {
                     if (againRequestListener != null) {
                         againRequestListener.request();
                     }
                 }
             });
         }
-        noDataView.setNoDataImageResource(drawableRes);
-        noDataView.setNoDataText(nodataText);
-        if (noDataView.isNoDataViewShow()) {
+        noDataViews.get(type).setNoDataImageResource(drawableRes);
+        noDataViews.get(type).setNoDataText(nodataText);
+        if (null == nodataAgainText || "".equals(nodataAgainText)) {
+            noDataViews.get(type).setNoDataAgainVisivility(View.GONE);
+        } else {
+            noDataViews.get(type).setNoDataAgainText(nodataAgainText);
+        }
+        if (noDataViews.get(type).isNoDataViewShow()) {
             return;
         }
-        ViewGroup viewGroup = (ViewGroup) contentView.getParent();
-        viewGroup.removeView(contentView);
-        viewGroup.addView(noDataView, contentView.getLayoutParams());
-        noDataView.setNoDataViewShow(true);
+        ViewGroup viewGroup = (ViewGroup) contentViews.get(type).getParent();
+        viewGroup.removeView(contentViews.get(type));
+        viewGroup.addView(noDataViews.get(type), contentViews.get(type).getLayoutParams());
+        noDataViews.get(type).setNoDataViewShow(true);
     }
 
     /**
@@ -115,26 +133,44 @@ public class LoadViewHelper {
             mProgressDialog.dismiss();
         }
     }
-
-    /**
+	
+	/**
+     * 搜索无数据view
+     *
+     * @param currentView 需要替换的view
+     */
+    public void hiddenFoundNodataView(View currentView) {
+        hiddenNodataView(FOUNDNODATA, currentView);
+    }
+	
+	/**
+     * 网络无数据view
+     *
+     * @param currentView 需要替换的view
+     */
+    public void hiddenNetNodataView(View currentView) {
+        hiddenNodataView(NETWORKNO, currentView);
+    }
+	
+	/**
      * 隐藏无数据view
      *
      * @param currentView 需要替换的view
      */
-    public void hiddenNodataView(View currentView) {
-        if (contentView == null) {
-            contentView = currentView;
+    private void hiddenNodataView(int type, View currentView) {
+        if (contentViews.get(type, null) == null) {
+            contentViews.put(type, currentView);
         }
-        if (noDataView == null) {
+        if (noDataViews.get(type, null) == null) {
             return;
         }
-        if (!noDataView.isNoDataViewShow()) {
+        if (!noDataViews.get(type).isNoDataViewShow()) {
             return;
         }
-        ViewGroup viewGroup = (ViewGroup) noDataView.getParent();
-        viewGroup.removeView(noDataView);
-        viewGroup.addView(contentView);
-        noDataView.setNoDataViewShow(false);
+        ViewGroup viewGroup = (ViewGroup) noDataViews.get(type).getParent();
+        viewGroup.removeView(noDataViews.get(type));
+        viewGroup.addView(contentViews.get(type));
+        noDataViews.get(type).setNoDataViewShow(false);
     }
 
     public void setAgainRequestListener(AgainRequestListener againRequestListener) {

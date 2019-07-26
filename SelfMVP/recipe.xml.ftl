@@ -7,6 +7,12 @@
                    to="${escapeXmlAttribute(srcOut)}/mvp/base/BasePresenter.java" />
     <instantiate from="root/src/app_package/mvp/base/BaseView.java.ftl"
                    to="${escapeXmlAttribute(srcOut)}/mvp/base/BaseView.java" />
+    <instantiate from="root/src/app_package/mvp/base/BaseContextView.java.ftl"
+                   to="${escapeXmlAttribute(srcOut)}/mvp/base/BaseContextView.java" />
+    <instantiate from="root/src/app_package/mvp/base/BaseHttpEntity.java.ftl"
+                   to="${escapeXmlAttribute(srcOut)}/mvp/base/BaseHttpEntity.java" />
+    <instantiate from="root/src/app_package/mvp/base/BaseNoNetworkView.java.ftl"
+                   to="${escapeXmlAttribute(srcOut)}/mvp/base/BaseNoNetworkView.java" />
 	</#if>
     <instantiate from="root/src/app_package/mvp/model/MainModel.java.ftl"
                    to="${escapeXmlAttribute(srcOut)}/mvp/model/${model}.java" />

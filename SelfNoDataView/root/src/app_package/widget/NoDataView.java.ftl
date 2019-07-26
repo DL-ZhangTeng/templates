@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Button;
 
 import ${packageName}.R;
 
@@ -24,6 +25,7 @@ public class ${className} extends LinearLayout {
     private LinearLayout llNoData;
     private TextView tvNoData;
     private ImageView ivNoData;
+	private Button btnNoData;
 	private boolean isNoDataViewShow = false;
 
     public ${className}(Context context) {
@@ -73,6 +75,7 @@ public class ${className} extends LinearLayout {
         llNoData = (LinearLayout) findViewById(R.id.ll_no_data);
         tvNoData = (TextView) findViewById(R.id.tv_no_data);
         ivNoData = (ImageView) findViewById(R.id.iv_no_data);
+		btnNoData = findViewById(R.id.btn_no_data);
     }
 
     public void setNoDataVisibility(int visibility) {
@@ -101,5 +104,26 @@ public class ${className} extends LinearLayout {
 
     public void setNoDataViewShow(boolean noDataViewShow) {
         isNoDataViewShow = noDataViewShow;
+    }
+	
+	    public void setNoDataAgainText(String noDataAgainText) {
+        btnNoData.setText(noDataAgainText);
+    }
+
+    public void setNoDataAgainVisivility(int visivility) {
+        btnNoData.setVisibility(visivility);
+    }
+
+    public void setAgainRequestListener(final AgainRequestListener againRequestListener) {
+         btnNoData.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (againRequestListener != null) againRequestListener.request();
+            }
+        });
+    }
+
+    public interface AgainRequestListener {
+        void request();
     }
 }
