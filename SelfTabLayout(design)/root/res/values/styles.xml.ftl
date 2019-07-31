@@ -7,6 +7,7 @@
         <item name="tabMyMaxWidth">@dimen/design_tab_max_width</item>
         <item name="tabMyIndicatorColor">?attr/colorAccent</item>
         <item name="tabMyIndicatorHeight">2dp</item>
+		<item name="tabMyIndicatorSelfFit">true</item>
         <item name="tabMyPaddingStart">12dp</item>
         <item name="tabMyPaddingEnd">12dp</item>
         <item name="tabMyBackground">?attr/selectableItemBackground</item>

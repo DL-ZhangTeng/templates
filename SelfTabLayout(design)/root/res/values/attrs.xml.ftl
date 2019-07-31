@@ -23,6 +23,7 @@
         <attr name="tabMyIndicatorMarginBottom" format="dimension" />
         <attr name="tabMyIndicatorMarginTop" format="dimension" />
         <attr name="tabMyIndicatorBottomLayer" format="boolean" />
+		<attr name="tabMyIndicatorSelfFit" format="boolean" />
         <attr name="tabMyIndicatorRoundRadius" format="dimension" />
         <attr name="tabMyContentStart" format="dimension" />
         <attr name="tabMyMinWidth" format="dimension" />

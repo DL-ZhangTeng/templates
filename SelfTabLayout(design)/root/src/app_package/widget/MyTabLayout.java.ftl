@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -186,6 +187,8 @@ public class MyTabLayout extends HorizontalScrollView {
                 a.getDimensionPixelSize(R.styleable.MyTabLayout_tabMyIndicatorRoundRadius, 0));
         mTabStrip.setSelectedIndicatorBottomLayer(
                 a.getBoolean(R.styleable.MyTabLayout_tabMyIndicatorBottomLayer, false));
+		mTabStrip.setSelectedIndicatorSelfFit(
+                a.getBoolean(R.styleable.MyTabLayout_tabMyIndicatorSelfFit, true));
         mTabStrip.setSelectedIndicatorColor(a.getColor(R.styleable.MyTabLayout_tabMyIndicatorColor, 0));
 
         mTabPaddingStart = mTabPaddingTop = mTabPaddingEnd = mTabPaddingBottom = a
@@ -1917,6 +1920,8 @@ public class MyTabLayout extends HorizontalScrollView {
         private int mIndicatorRoundRadius = -1;
 
         boolean mTabIndicatorBottomLayer = false;
+		
+        boolean mTabIndicatorSelfFit = true;
 
         private ValueAnimator mIndicatorAnimator;
 
@@ -1982,6 +1987,13 @@ public class MyTabLayout extends HorizontalScrollView {
             }
         }
 
+        void setSelectedIndicatorSelfFit(boolean selfFit) {
+            if (mTabIndicatorSelfFit != selfFit) {
+                mTabIndicatorSelfFit = selfFit;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
+        }
+		
         boolean childrenNeedLayout() {
             for (int i = 0, z = getChildCount(); i < z; i++) {
                 final View child = getChildAt(i);
@@ -2212,6 +2224,18 @@ public class MyTabLayout extends HorizontalScrollView {
 
         private void drawIndicator(Canvas canvas) {
             // Thick colored underline below the current selection
+			          if (mTabIndicatorSelfFit) {
+                if (getTabAt(getSelectedTabPosition()) != null) {
+                    TextView textView = getTabAt(getSelectedTabPosition()).mView.mTextView;
+                    int textWidth = TextUtil.getTextWidth(textView);
+                    int width = getWidth() / getTabCount();
+                    mIndicatorPaddingRight = (width - textWidth) / 2;
+                    mIndicatorPaddingLeft = (width - textWidth) / 2;
+                    int textHeight = TextUtil.getTextHeight(textView);
+                    int height = getHeight();
+                    mIndicatorMarginBottom = (height - textHeight) / 2 - mSelectedIndicatorHeight / 2;
+                }
+            }
             if (mIndicatorLeft >= 0 && mIndicatorRight > mIndicatorLeft) {
                 if (mIndicatorPaddingLeft >= 0
                         && mIndicatorPaddingRight >= 0
@@ -2267,5 +2291,33 @@ public class MyTabLayout extends HorizontalScrollView {
             mAutoRefresh = autoRefresh;
         }
     }
+	
+	public static class TextUtil {
+    /**
+     * 计算textview中文本高度
+     */
+    public static int getTextHeight(TextView textView) {
+        Rect bounds = new Rect();
+        Paint mTextPaint = textView.getPaint();
+        String mText = textView.getText().toString();
+        mTextPaint.getTextBounds(mText, 0, mText.length(), bounds);
+        return bounds.height();
+    }
 
+    /**
+     * 计算textview中文本宽度
+     */
+    public static float getTextWidthF(TextView textView) {
+        float textWidth = textView.getPaint().measureText(textView.getText().toString());
+        return textWidth;
+    }
+
+    /**
+     * 计算textview中文本宽度
+     */
+    public static int getTextWidth(TextView textView) {
+        int textWidth = (int) android.text.Layout.getDesiredWidth(textView.getText(), textView.getPaint());
+        return textWidth;
+    }
+}
 }
