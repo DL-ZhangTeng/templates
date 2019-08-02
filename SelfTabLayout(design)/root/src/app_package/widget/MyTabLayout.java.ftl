@@ -1568,7 +1568,7 @@ public class MyTabLayout extends HorizontalScrollView {
 
         @Override
         public void onTabSelected(MyTabLayout.Tab tab) {
-            mViewPager.setCurrentItem(tab.getPosition());
+            mViewPager.setCurrentItem(tab.getPosition(), false);
         }
 
         @Override
