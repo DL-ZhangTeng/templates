@@ -338,7 +338,6 @@ public class ${className} {
             fis = new FileInputStream(file);
             size = fis.available();
         } else {
-            file.createNewFile();
             Log.e("获取文件大小", "文件不存在!");
         }
         return size;
