@@ -6,6 +6,7 @@ import ${packageName}.mvp.model.${model};
 
 import java.lang.ref.WeakReference;
 
+
 public class ${presenter} extends BasePresenter<${view}> {
 	private ${model} model;
 	

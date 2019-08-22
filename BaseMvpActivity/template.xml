@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<template
+    format="5"
+    revision="5"
+    name="Base MVP Activity"
+    minApi="9"
+    minBuildApi="14"
+    description="Creates a new Base MVP activity">
+
+    <category value="Activity" />
+    <formfactor value="Mobile" />
+
+	<parameter
+        id="isFirstActivity"
+        name="is FirstActivity File?"
+        type="boolean"
+        default="false"
+        help="If true, a BaseActivity file will be generated" />
+		
+	<parameter
+        id="prefix"
+        name="Prefix Name"
+        type="string"
+        default=""/>
+		
+    <parameter
+        id="activityClass"
+        name="Activity name"
+        type="string"
+        constraints="class|unique|nonempty"
+        suggest="${underscoreToCamelCase(classToResource(prefix))}Activity"
+        default="BaseActivity"
+        help="The name of the activity class to create" />
+
+    <parameter
+        id="layoutName"
+        name="Layout name"
+        type="string"
+        constraints="layout|unique|nonempty"
+        suggest="${activityToLayout(activityClass)}"
+        default="activity_main"
+        visibility="!isFirstActivity"
+        help="The name of the layout to create for the activity" />
+
+	<parameter
+        id="presenter"
+        name="Presenter Name"
+        type="string"
+		suggest="${underscoreToCamelCase(classToResource(prefix))}Presenter"
+		constraints="class|unique|nonempty"
+		visibility="!isFirstActivity"
+        default="Presenter"/>
+
+    <parameter
+        id="view"
+        name="View Name"
+        type="string"
+		constraints="class|unique|nonempty"
+		suggest="${underscoreToCamelCase(classToResource(prefix))}View"
+		visibility="!isFirstActivity"
+        default="View"/>
+		
+    <parameter
+        id="model"
+        name="Model Name"
+        type="string"
+		constraints="class|unique|nonempty"
+		suggest="${underscoreToCamelCase(classToResource(prefix))}Model"
+		visibility="!isFirstActivity"
+        default="Model"/>
+		
+	<parameter
+        id="isLauncher"
+        name="launcher Activity"
+        type="boolean"
+        default="false"
+		visibility="!isFirstActivity"
+        help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher" />
+  
+    <parameter
+        id="packageName"
+        name="Package name"
+        type="string"
+        constraints="package"/>
+
+    <!-- 128x128 thumbnails relative to template.xml -->
+    <thumbs>
+        <!-- default thumbnail is required -->
+        <thumb>template_blank_activity.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>
