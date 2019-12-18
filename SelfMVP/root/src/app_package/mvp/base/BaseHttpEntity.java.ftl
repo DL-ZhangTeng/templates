@@ -5,13 +5,13 @@ package ${packageName}.mvp.base;
  * Created by swing on 2019/7/2 0002.
  */
 public abstract class BaseHttpEntity<T> {
-    private BaseNoNetworkView baseNoNetworkView;
+    private BaseView baseView;
 
     public BaseHttpEntity() {
     }
 
-    public BaseHttpEntity(BaseNoNetworkView baseNoNetworkView) {
-        this.baseNoNetworkView = baseNoNetworkView;
+    public BaseHttpEntity(BaseView baseView) {
+        this.baseView = baseView;
     }
 
     public abstract void onSuccess(T data);
@@ -20,8 +20,8 @@ public abstract class BaseHttpEntity<T> {
      * 无网络
      */
     public void onNoNetworkError() {
-        if (baseNoNetworkView != null)
-            baseNoNetworkView.showNoNetwork();
+        if (baseView != null && baseView instanceof BaseNoNetworkView)
+            ((BaseNoNetworkView) baseView).showNoNetwork();
     }
 
     /**
@@ -42,9 +42,9 @@ public abstract class BaseHttpEntity<T> {
      * 请求完成
      */
     public void onFinish() {
-        if (baseNoNetworkView != null)
-            baseNoNetworkView.hideNoNetwork();
-		if (baseNoNetworkView instanceof BaseRefreshView)
-           ((BaseRefreshView) baseNoNetworkView).finishRefreshOrLoadMore();
+        if (baseView != null && baseView instanceof BaseNoNetworkView)
+            ((BaseNoNetworkView) baseView).hideNoNetwork();
+        if (baseView != null && baseView instanceof BaseRefreshView)
+            ((BaseRefreshView) baseView).finishRefreshOrLoadMore();
     }
 }
