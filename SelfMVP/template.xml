@@ -11,7 +11,7 @@
     <formfactor value="Mobile" />
 	<parameter
         id="isBaseMVP"
-        name="is BaseMVP File?"
+        name="Do you want to generate BaseMVP File?"
         type="boolean"
         default="false"
         help="If true, a BaseMVP file will be generated" />
@@ -20,6 +20,15 @@
         name="Prefix Name"
         type="string"
         default=""/>
+
+    <parameter
+        id="ipresenter"
+        name="IPresenter Name"
+        type="string"
+        suggest="I${underscoreToCamelCase(classToResource(prefix))}Presenter"
+        constraints="class|unique|nonempty"
+        default="IPresenter"/>
+
     <parameter
         id="presenter"
         name="Presenter Name"

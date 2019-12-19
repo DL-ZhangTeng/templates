@@ -17,8 +17,8 @@ public class BasePresenter<V extends BaseView> {
             view = null;
         }
     }
-
-    private boolean isAttach() {
+    
+    boolean isAttach() {
         return view != null &&
                 view.get() != null;
     }

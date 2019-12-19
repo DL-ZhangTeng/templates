@@ -42,6 +42,15 @@
         visibility="!isFirstActivity"
         help="The name of the layout to create for the activity" />
 
+    <parameter
+        id="ipresenter"
+        name="IPresenter Name"
+        type="string"
+        suggest="I${underscoreToCamelCase(classToResource(prefix))}Presenter"
+        constraints="class|unique|nonempty"
+        visibility="!isFirstActivity"
+        default="IPresenter"/>
+        
 	<parameter
         id="presenter"
         name="Presenter Name"

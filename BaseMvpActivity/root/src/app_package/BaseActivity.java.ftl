@@ -18,7 +18,7 @@ public class ${activityClass} extends BaseMvpActivity<${view}, ${presenter}> imp
 
 	@Override
     public ${presenter} createPresenter() {
-        return null;
+        return new ${presenter}();
     }
 	
     @Override
@@ -28,6 +28,21 @@ public class ${activityClass} extends BaseMvpActivity<${view}, ${presenter}> imp
 
     @Override
     protected void initData() {
+
+    }
+
+    @Override
+    public void showLoadingView() {
+        
+    }
+
+    @Override
+    public void dismissLoadingView() {
+
+    }
+
+    @Override
+    public void inflateView(Object data) {
 
     }
 }
