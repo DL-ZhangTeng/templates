@@ -23,7 +23,8 @@ public class ${activityClass} extends BaseMvpActivity<${view}, ${presenter}> imp
 	
     @Override
     protected void initView() {
-
+        super.initView();
+        
     }
 
     @Override
@@ -63,8 +64,7 @@ public abstract class ${activityClass}<V extends BaseView, P extends BasePresent
 	protected P mPresenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initView() {
         mPresenter = createPresenter();
         mPresenter.attachView((V) this);
     }

@@ -7,10 +7,10 @@ import java.lang.reflect.Method;
 
 /**
  *使用代理的方式自动调用加载动画开启与关闭方法
- *(I) Proxy.newProxyInstance(
- *               TestPresenter.class.getClassLoader(),
- *               TestPresenter.class.getInterfaces(),
- *               new PresenterProxy<>(mPresenter))
+ * IPresenter mIPresenter = Proxy.newProxyInstance(
+ * TestPresenter.class.getClassLoader(),
+ * TestPresenter.class.getInterfaces(),
+ * new PresenterProxy<>(mPresenter));
  */
 public class PresenterProxy<V extends BaseLoadingView, T extends BaseLoadingPresenter<V>> implements InvocationHandler {
     @NonNull
