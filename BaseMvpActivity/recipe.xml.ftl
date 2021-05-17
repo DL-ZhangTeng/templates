@@ -26,13 +26,15 @@
 	<#else>
     <instantiate from="root/res/layout/activity_main.xml"
                    to="${escapeXmlAttribute(resOut)}/layout/${layoutName}.xml" />
+    <instantiate from="root/src/app_package/mvp/model/imodel/IMainModel.kt"
+                   to="${escapeXmlAttribute(srcOut)}/mvp/model/imodel/${imodel}.kt" />
 	  <instantiate from="root/src/app_package/mvp/model/MainModel.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/model/${model}.kt" />
     <instantiate from="root/src/app_package/mvp/presenter/ipresenter/IMainPresenter.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/presenter/ipresenter/${ipresenter}.kt" />
     <instantiate from="root/src/app_package/mvp/presenter/MainPresenter.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/presenter/${presenter}.kt" />
-    <instantiate from="root/src/app_package/mvp/view/MainView.kt"
+    <instantiate from="root/src/app_package/mvp/view/IMainView.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/view/${view}.kt" />
 	</#if>
     <open file="${escapeXmlAttribute(resOut)}/layout/${layoutName}.xml" />

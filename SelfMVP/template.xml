@@ -42,8 +42,17 @@
         name="View Name"
         type="string"
 		constraints="class|unique|nonempty"
-		suggest="${underscoreToCamelCase(classToResource(prefix))}View"
-        default="View"/>
+		suggest="I${underscoreToCamelCase(classToResource(prefix))}View"
+        default="IView"/>
+
+    <parameter
+        id="imodel"
+        name="IModel Name"
+        type="string"
+        suggest="I${underscoreToCamelCase(classToResource(prefix))}Model"
+        constraints="class|unique|nonempty"
+        default="IModel"/>
+
     <parameter
         id="model"
         name="Model Name"

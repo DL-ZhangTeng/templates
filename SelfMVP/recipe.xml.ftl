@@ -24,13 +24,15 @@
     <instantiate from="root/src/app_package/mvp/base/LoadingPresenterHandler.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/base/LoadingPresenterHandler.kt" />
 	</#if>
+	<instantiate from="root/src/app_package/mvp/model/imodel/IMainModel.kt"
+                   to="${escapeXmlAttribute(srcOut)}/mvp/model/imodel/${imodel}.kt" />
     <instantiate from="root/src/app_package/mvp/model/MainModel.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/model/${model}.kt" />
     <instantiate from="root/src/app_package/mvp/presenter/ipresenter/IMainPresenter.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/presenter/ipresenter/${ipresenter}.kt" />
     <instantiate from="root/src/app_package/mvp/presenter/MainPresenter.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/presenter/${presenter}.kt" />
-    <instantiate from="root/src/app_package/mvp/view/MainView.kt"
+    <instantiate from="root/src/app_package/mvp/view/IMainView.kt"
                    to="${escapeXmlAttribute(srcOut)}/mvp/view/${view}.kt" />
 
     <open file="${escapeXmlAttribute(srcOut)}/${presenter}.kt" />

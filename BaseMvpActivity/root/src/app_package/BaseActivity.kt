@@ -4,12 +4,13 @@ package ${packageName}.activity
 import android.os.Bundle
 
 import ${packageName}.base.BaseMvpActivity
+import ${packageName}.mvp.model.imodel.${imodel}
 import ${packageName}.mvp.presenter.ipresenter.${ipresenter}
 import ${packageName}.mvp.presenter.${presenter}
 import ${packageName}.mvp.view.${view}
 import ${packageName}.R
 
-class ${activityClass} : BaseMvpActivity<${view}, ${ipresenter}>() , ${view} {
+class ${activityClass} : BaseMvpActivity<${view}, ${imodel}, ${ipresenter}>() , ${view} {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,7 @@ class ${activityClass} : BaseMvpActivity<${view}, ${ipresenter}>() , ${view} {
 <#else>
 package ${packageName}.base;
 
+import ${packageName}.mvp.base.IModel
 import ${packageName}.mvp.base.IPresenter
 import ${packageName}.mvp.base.IView
 
@@ -40,7 +42,7 @@ import ${packageName}.mvp.base.IView
  * Created by swing on 2017/11/23.
  */
 
-abstract class ${activityClass}<V : IView?, P : IPresenter<V?>?> : BaseActivity() {
+abstract class BaseMvpActivity<V : IView, M : IModel, P : IPresenter<V, M>> : BaseActivity() {
 	protected var mPresenter: P? = null
 
     override fun initView() {
